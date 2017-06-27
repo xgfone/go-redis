@@ -3,20 +3,26 @@ package redis
 import "strings"
 
 // Set executes the redis command SET.
-func (r *Redis) Set(key string, value interface{}, args ...interface{}) error {
+//
+// Panic if an error occurs.
+func (r *Redis) Set(key string, value interface{}, args ...interface{}) {
+	var err error
+
 	if len(args) == 0 {
-		_, err := r.Do("SET", key, value)
-		return err
+		_, err = r.Do("SET", key, value)
+	} else {
+		_args := make([]interface{}, len(args)+2)
+		_args[0] = key
+		_args[1] = value
+		for i, v := range args {
+			_args[i+2] = v
+		}
+		_, err = r.Do("SET", _args...)
 	}
 
-	_args := make([]interface{}, len(args)+2)
-	_args[0] = key
-	_args[1] = value
-	for i, v := range args {
-		_args[i+2] = v
+	if err != nil {
+		panic(err)
 	}
-	_, err := r.Do("SET", _args...)
-	return err
 }
 
 // Get executes the redis command GET.
@@ -34,9 +40,10 @@ func (r *Redis) Get(key string) string {
 }
 
 // Append executes the redis command APPEND.
-func (r *Redis) Append(key, value string) error {
-	_, err := r.Do("APPEND", key, value)
-	return err
+func (r *Redis) Append(key, value string) {
+	if _, err := r.Do("APPEND", key, value); err != nil {
+		panic(err)
+	}
 }
 
 // BitCount executes the redis command BITCOUNT.

@@ -4,7 +4,7 @@ package redis
 func (r *Redis) Keys(pattern string) []string {
 	reply, err := r.Do("KEYS", pattern)
 	if err != nil {
-		return nil
+		panic(err)
 	}
 	_results := reply.([]interface{})
 	if len(_results) == 0 {
