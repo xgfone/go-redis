@@ -21,9 +21,13 @@ func (r *Redis) Set(key string, value interface{}, args ...interface{}) error {
 
 // Get executes the redis command GET.
 //
+// Panic if an error occurs.
+//
 // Return "" if the key does not exist.
 func (r *Redis) Get(key string) string {
-	if reply, err := r.Do("GET", key); err == nil && reply != nil {
+	if reply, err := r.Do("GET", key); err != nil {
+		panic(err)
+	} else if reply != nil {
 		return string(reply.([]byte))
 	}
 	return ""
