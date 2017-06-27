@@ -1,5 +1,7 @@
 package redis
 
+import "strings"
+
 // Set executes the redis command SET.
 func (r *Redis) Set(key string, value interface{}, args ...interface{}) error {
 	if len(args) == 0 {
@@ -35,13 +37,13 @@ func (r *Redis) Append(key, value string) error {
 
 // BitCount executes the redis command BITCOUNT.
 //
-// Return -1 if an error occurs.
+// Panic if an error occurs.
 //
 // New in redis version 2.6.0.
 func (r *Redis) BitCount(key string, args ...int) int64 {
 	_len := len(args)
 	if _len != 0 && _len != 2 {
-		panic("The number of arguments is not right.")
+		panic(ErrInvalidArgs)
 	}
 
 	var reply interface{}
@@ -52,7 +54,35 @@ func (r *Redis) BitCount(key string, args ...int) int64 {
 		reply, err = r.Do("BITCOUNT", key, args[0], args[1])
 	}
 	if err != nil {
-		return -1
+		panic(err)
 	}
 	return reply.(int64)
+}
+
+// BitOp executes the redis command BITOP.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.6.0.
+func (r *Redis) BitOp(op, dest, src string, srcs ...string) int64 {
+	op = strings.ToUpper(op)
+	switch op {
+	case "AND", "OR", "NOT", "XOR":
+	default:
+		panic(ErrInvalidArgs)
+	}
+
+	args := make([]string, len(srcs)+3)
+	args[0] = op
+	args[1] = dest
+	args[2] = src
+	for i, s := range srcs {
+		args[i+3] = s
+	}
+
+	if _r, err := r.Do("BITOP", args); err != nil {
+		panic(err)
+	} else {
+		return _r.(int64)
+	}
 }

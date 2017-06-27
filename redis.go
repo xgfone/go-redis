@@ -12,6 +12,11 @@ import (
 // RedisConnTimeout is the timeout to connect to the Redis Server.
 var RedisConnTimeout = 5 * time.Second
 
+var (
+	// ErrInvalidArgs is panicked when the arguments of the redis command is not right.
+	ErrInvalidArgs = fmt.Errorf("The arguments is invalid.")
+)
+
 type redisConn struct {
 	redis.Conn
 }

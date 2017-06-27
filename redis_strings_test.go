@@ -47,3 +47,19 @@ func ExampleRedis_BitCount() {
 	// 4
 	// 6
 }
+
+func ExampleRedis_BitOp() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-bitop"
+	r.Set("key1", "foobar")
+	r.Set("key2", "abcdef")
+	fmt.Println(r.BitOp("OR", key, "key1", "key2"))
+	fmt.Println(r.Get(key))
+
+	// Output:
+	// 6
+	// `bc`ab
+
+}
