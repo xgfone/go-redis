@@ -31,3 +31,19 @@ func ExampleRedis_Append() {
 	// Output:
 	// test-append1
 }
+
+func ExampleRedis_BitCount() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-bitcount"
+	r.Set(key, "foobar")
+	fmt.Println(r.BitCount(key))
+	fmt.Println(r.BitCount(key, 0, 0))
+	fmt.Println(r.BitCount(key, 1, 1))
+
+	// Output:
+	// 26
+	// 4
+	// 6
+}

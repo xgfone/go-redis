@@ -32,3 +32,27 @@ func (r *Redis) Append(key, value string) error {
 	_, err := r.Do("APPEND", key, value)
 	return err
 }
+
+// BitCount executes the redis command BITCOUNT.
+//
+// Return -1 if an error occurs.
+//
+// New in redis version 2.6.0.
+func (r *Redis) BitCount(key string, args ...int) int64 {
+	_len := len(args)
+	if _len != 0 && _len != 2 {
+		panic("The number of arguments is not right.")
+	}
+
+	var reply interface{}
+	var err error
+	if _len == 0 {
+		reply, err = r.Do("BITCOUNT", key)
+	} else {
+		reply, err = r.Do("BITCOUNT", key, args[0], args[1])
+	}
+	if err != nil {
+		return -1
+	}
+	return reply.(int64)
+}
