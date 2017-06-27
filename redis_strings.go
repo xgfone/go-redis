@@ -83,7 +83,7 @@ func (r *Redis) BitOp(op, dest, src string, srcs ...string) int64 {
 		panic(ErrInvalidArgs)
 	}
 
-	args := make([]string, len(srcs)+3)
+	args := make([]interface{}, len(srcs)+3)
 	args[0] = op
 	args[1] = dest
 	args[2] = src
@@ -91,7 +91,7 @@ func (r *Redis) BitOp(op, dest, src string, srcs ...string) int64 {
 		args[i+3] = s
 	}
 
-	if _r, err := r.Do("BITOP", args); err != nil {
+	if _r, err := r.Do("BITOP", args...); err != nil {
 		panic(err)
 	} else {
 		return _r.(int64)
