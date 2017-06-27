@@ -72,10 +72,8 @@ func (r *Redis) Do(cmd string, args ...interface{}) (reply interface{}, err erro
 	conn := r.getConn()
 
 	defer func() {
-		if _err := recover(); _err != nil {
-			err = fmt.Errorf("%v", _err)
+		if conn.Err() != nil {
 			r.putConn(nil)
-			conn.Close()
 		} else {
 			r.putConn(conn)
 		}
