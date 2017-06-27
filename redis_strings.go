@@ -26,3 +26,9 @@ func (r *Redis) Get(key string) string {
 	}
 	return ""
 }
+
+// Append executes the redis command APPEND.
+func (r *Redis) Append(key, value string) error {
+	_, err := r.Do("APPEND", key, value)
+	return err
+}

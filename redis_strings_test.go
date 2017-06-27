@@ -18,3 +18,16 @@ func ExampleRedis_Set() {
 	// test-set-get
 	//
 }
+
+func ExampleRedis_Append() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-append"
+	r.Set(key, key)
+	r.Append(key, "1")
+	fmt.Println(r.Get(key))
+
+	// Output:
+	// test-append1
+}
