@@ -59,3 +59,12 @@ func (r *Redis) Exists(key string, keys ...string) bool {
 func (r *Redis) Expire(key string, timeout int) bool {
 	return r.doToBool("EXPIRE", key, timeout)
 }
+
+// ExpireAt executes the redis command EXPIREAT.
+//
+// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+//
+// New in redis version 1.2.0.
+func (r *Redis) ExpireAt(key string, timestamp int) bool {
+	return r.doToBool("EXPIREAT", key, timestamp)
+}
