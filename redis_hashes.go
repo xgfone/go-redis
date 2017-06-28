@@ -5,7 +5,7 @@ package redis
 // Panic if an error occurs.
 //
 // New in redis version 2.0.0.
-func (r *Redis) HSet(key, field, value string) bool {
+func (r *Redis) HSet(key, field string, value interface{}) bool {
 	return r.doToBool("HSET", key, field, value)
 }
 
@@ -49,4 +49,13 @@ func (r *Redis) HExists(key, field string) bool {
 // New in redis version 2.0.0.
 func (r *Redis) HGetAll(key string) []string {
 	return r.doToStringSlice("HGETALL", key)
+}
+
+// HIncrBy executes the redis command HINCRBY.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) HIncrBy(key, field string, n int64) int64 {
+	return r.doToInt("HINCRBY", key, field, n)
 }

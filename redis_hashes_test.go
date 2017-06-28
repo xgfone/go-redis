@@ -59,3 +59,19 @@ func ExampleRedis_HGetAll() {
 	// Output:
 	// [field1 foo field2 bar]
 }
+
+func ExampleRedis_HIncrBy() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-hinceby"
+	r.HSet(key, "field", 5)
+	fmt.Println(r.HIncrBy(key, "field", 1))
+	fmt.Println(r.HIncrBy(key, "field", -1))
+	fmt.Println(r.HIncrBy(key, "field", -10))
+
+	// Output:
+	// 6
+	// 5
+	// -5
+}
