@@ -1,8 +1,6 @@
 package redis
 
-import (
-	"strconv"
-)
+import "strconv"
 
 func toBool(v interface{}) bool {
 	switch v.(type) {

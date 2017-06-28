@@ -24,3 +24,15 @@ func (r *Redis) Auth(passwd string) error {
 func (r *Redis) Echo(msg string) string {
 	return r.doToString("ECHO", msg)
 }
+
+// Ping executes the redis command PING.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Ping(msg ...string) string {
+	if len(msg) == 0 {
+		return r.doToString("PING")
+	}
+	return r.doToString("PING", msg)
+}
