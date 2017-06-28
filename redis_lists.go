@@ -147,18 +147,14 @@ func (r *Redis) LTrim(key string, start, stop int) {
 	r.do("LTRIM", key, start, stop)
 }
 
-// BLPop executes the redis command BLPOP.
-//
-// Panic if an error occurs.
-//
-// New in redis version 2.0.0.
-func (r *Redis) BLPop(key string, keys ...interface{}) []string {
+func (r *Redis) bpop(cmd, key string, keys ...interface{}) []string {
 	_len := len(keys)
 	if _len < 1 {
 		panic(ErrInvalidArgs)
 	}
 
 	if _, ok := keys[_len-1].(int); !ok {
+		println("++++++++++++++++++")
 		panic(ErrInvalidArgs)
 	}
 
@@ -167,5 +163,27 @@ func (r *Redis) BLPop(key string, keys ...interface{}) []string {
 	for i, v := range keys {
 		args[i+1] = v
 	}
-	return r.doToStringSlice("BLPOP", args...)
+	return r.doToStringSlice(cmd, args...)
+}
+
+// BLPop executes the redis command BLPOP.
+//
+// Notice: The argument keys has one element, which is the timeout,
+// and the type of which must be int. If keys has more then one element,
+// the timeout is the last. Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) BLPop(key string, keys ...interface{}) []string {
+	return r.bpop("BLPOP", key, keys...)
+}
+
+// BRPop executes the redis command BRPOP.
+//
+// Notice: The argument keys has one element, which is the timeout,
+// and the type of which must be int. If keys has more then one element,
+// the timeout is the last. Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) BRPop(key string, keys ...interface{}) []string {
+	return r.bpop("BRPOP", key, keys...)
 }
