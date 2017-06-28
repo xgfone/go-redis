@@ -119,3 +119,12 @@ func (r *Redis) LRem(key string, count int, value string) int64 {
 func (r *Redis) LSet(key string, index int, value string) {
 	r.do("LSET", key, index, value)
 }
+
+// LTrim executes the redis command LTRIM.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) LTrim(key string, start, stop int) {
+	r.do("LTRIM", key, start, stop)
+}
