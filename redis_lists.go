@@ -47,3 +47,12 @@ func (r *Redis) LPop(key string) string {
 func (r *Redis) RPop(key string) string {
 	return r.doToString("RPOP", key)
 }
+
+// LIndex executes the redis command LINDEX.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) LIndex(key string, index int) string {
+	return r.doToString("LINDEX", key, index)
+}

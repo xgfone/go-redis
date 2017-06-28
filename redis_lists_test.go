@@ -27,3 +27,19 @@ func ExampleRedis_RPop() {
 	// Output:
 	// c
 }
+
+func ExampleRedis_LIndex() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-lindex"
+	r.RPush(key, "a", "b", "c")
+	fmt.Println(r.LIndex(key, 1))
+	fmt.Println(r.LIndex(key, -1))
+	fmt.Println(r.LIndex(key, 4))
+
+	// Output:
+	// b
+	// c
+	//
+}
