@@ -203,3 +203,17 @@ func ExampleRedis_GetSet() {
 	// 1
 	// 2
 }
+
+func ExampleRedis_MGet() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key1 := "test-mget1"
+	key2 := "test-mget2"
+	r.Set(key1, "Hello")
+	r.Set(key2, "World")
+	fmt.Println(r.MGet(key1, key2, "nonexisting"))
+
+	// Output:
+	// [Hello World ]
+}

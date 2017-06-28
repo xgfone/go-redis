@@ -201,3 +201,17 @@ func (r *Redis) GetRange(key string, start, end int) string {
 func (r *Redis) GetSet(key, value string) string {
 	return r.doToString("GETSET", key, value)
 }
+
+// MGet executes the redis command MGET.
+//
+// If a certain key does not exist, this value is "". Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) MGet(key string, keys ...string) []string {
+	args := make([]interface{}, len(keys)+1)
+	args[0] = key
+	for i, a := range keys {
+		args[i+1] = a
+	}
+	return r.doToStringSlice("MGET", args...)
+}

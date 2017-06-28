@@ -42,3 +42,21 @@ func (r *Redis) doToFloat(cmd string, args ...interface{}) float64 {
 	}
 	return 0.0
 }
+
+func (r *Redis) doToStringSlice(cmd string, args ...interface{}) []string {
+	if _r, err := r.Do(cmd, args...); err != nil {
+		panic(err)
+	} else if _r != nil {
+		vs := _r.([]interface{})
+		results := make([]string, len(vs))
+		for i, v := range vs {
+			if v == nil {
+				results[i] = ""
+			} else {
+				results[i] = string(v.([]byte))
+			}
+		}
+		return results
+	}
+	return nil
+}
