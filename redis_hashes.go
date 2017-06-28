@@ -134,3 +134,12 @@ func (r *Redis) HMSet(key, field string, value interface{}, fields ...interface{
 		panic(err)
 	}
 }
+
+// HStrLen executes the redis command HSTRLEN.
+//
+// Panic if an error occurs.
+//
+// New in redis version 3.2.0.
+func (r *Redis) HStrLen(key, field string) int64 {
+	return r.doToInt("HSTRLEN", key, field)
+}
