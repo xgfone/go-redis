@@ -215,3 +215,26 @@ func (r *Redis) MGet(key string, keys ...string) []string {
 	}
 	return r.doToStringSlice("MGET", args...)
 }
+
+// MSet executes the redis command MSET.
+//
+// If a certain key does not exist, this value is "". Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) MSet(key, value string, kvs ...string) {
+	_len := len(kvs)
+	if _len%2 != 0 {
+		panic(ErrInvalidArgs)
+	}
+
+	args := make([]interface{}, _len+2)
+	args[0] = key
+	args[1] = value
+	for i, a := range kvs {
+		args[i+2] = a
+	}
+
+	if _, err := r.Do("MSET", args...); err != nil {
+		panic(err)
+	}
+}
