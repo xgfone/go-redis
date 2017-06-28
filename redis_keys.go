@@ -1,6 +1,10 @@
 package redis
 
-// Keys executes the redis command KEYS
+// Keys executes the redis command KEYS。
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
 func (r *Redis) Keys(pattern string) []string {
 	reply, err := r.Do("KEYS", pattern)
 	if err != nil {

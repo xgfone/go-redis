@@ -5,6 +5,8 @@ import "strings"
 // Set executes the redis command SET.
 //
 // Panic if an error occurs.
+//
+// New in redis version 1.0.0.
 func (r *Redis) Set(key string, value interface{}, args ...interface{}) {
 	var err error
 
@@ -27,9 +29,9 @@ func (r *Redis) Set(key string, value interface{}, args ...interface{}) {
 
 // Get executes the redis command GET.
 //
-// Panic if an error occurs.
+// Panic if an error occurs. Return "" if the key does not exist.
 //
-// Return "" if the key does not exist.
+// New in redis version 1.0.0.
 func (r *Redis) Get(key string) string {
 	if reply, err := r.Do("GET", key); err != nil {
 		panic(err)
@@ -40,6 +42,10 @@ func (r *Redis) Get(key string) string {
 }
 
 // Append executes the redis command APPEND.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
 func (r *Redis) Append(key, value string) {
 	if _, err := r.Do("APPEND", key, value); err != nil {
 		panic(err)
@@ -137,7 +143,7 @@ func (r *Redis) Decr(key string) int64 {
 	}
 }
 
-// Decr executes the redis command DECR.
+// DecrBy executes the redis command DECRBY.
 //
 // Panic if an error occurs.
 //
