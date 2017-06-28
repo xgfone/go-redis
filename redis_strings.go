@@ -33,12 +33,7 @@ func (r *Redis) Set(key string, value interface{}, args ...interface{}) {
 //
 // New in redis version 1.0.0.
 func (r *Redis) Get(key string) string {
-	if reply, err := r.Do("GET", key); err != nil {
-		panic(err)
-	} else if reply != nil {
-		return string(reply.([]byte))
-	}
-	return ""
+	return r.doToString("GET", key)
 }
 
 // Append executes the redis command APPEND.
