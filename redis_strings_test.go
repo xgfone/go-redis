@@ -60,3 +60,25 @@ func ExampleRedis_BitOp() {
 	// 6
 	// `bc`ab
 }
+
+func ExampleRedis_BitPos() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-bitpos"
+	r.Set(key, "\xff\xf0\x00")
+	fmt.Println(r.BitPos(key, false))
+
+	r.Set(key, "\x00\xff\xf0")
+	fmt.Println(r.BitPos(key, true, 0))
+	fmt.Println(r.BitPos(key, true, 2))
+
+	r.Set(key, "\x00\x00\x00")
+	fmt.Println(r.BitPos(key, true))
+
+	// Output:
+	// 12
+	// 8
+	// 16
+	// -1
+}

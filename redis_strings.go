@@ -97,3 +97,29 @@ func (r *Redis) BitOp(op, dest, src string, srcs ...string) int64 {
 		return _r.(int64)
 	}
 }
+
+// BitPos executes the redis command BITPOS.
+//
+// For the argument, bit, true is 1 and false is 0.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.8.7.
+func (r *Redis) BitPos(key string, bit bool, args ...int) int64 {
+	_args := make([]interface{}, len(args)+2)
+	_args[0] = key
+	if bit {
+		_args[1] = 1
+	} else {
+		_args[1] = 0
+	}
+	for i, a := range args {
+		_args[i+2] = a
+	}
+
+	if _r, err := r.Do("BITPOS", _args...); err != nil {
+		panic(err)
+	} else {
+		return _r.(int64)
+	}
+}
