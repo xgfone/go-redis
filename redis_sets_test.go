@@ -88,3 +88,17 @@ func ExampleRedis_SInterStore() {
 	// 1
 	// [c]
 }
+
+func ExampleRedis_SIsMember() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-sismember"
+	r.SAdd(key, "a", "b", "c")
+	fmt.Println(r.SIsMember(key, "a"))
+	fmt.Println(r.SIsMember(key, "z"))
+
+	// Output:
+	// true
+	// false
+}

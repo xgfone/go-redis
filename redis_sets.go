@@ -90,3 +90,12 @@ func (r *Redis) SInterStore(dest, key string, keys ...string) int64 {
 	}
 	return r.doToInt("SINTERSTORE", args...)
 }
+
+// SIsMember executes the redis command SISMEMBER.
+//
+// For the returned value, ture is 1 and false is 0. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) SIsMember(key, member string) bool {
+	return r.doToBool("SISMEMBER", key, member)
+}
