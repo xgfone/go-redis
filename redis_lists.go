@@ -187,3 +187,12 @@ func (r *Redis) BLPop(key string, keys ...interface{}) []string {
 func (r *Redis) BRPop(key string, keys ...interface{}) []string {
 	return r.bpop("BRPOP", key, keys...)
 }
+
+// BRPopLPush executes the redis command BRPOPLPUSH.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.2.0.
+func (r *Redis) BRPopLPush(src, dst string, timeout int) string {
+	return r.doToString("BRPOPLPUSH", src, dst, timeout)
+}

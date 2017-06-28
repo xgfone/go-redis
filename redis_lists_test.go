@@ -195,3 +195,20 @@ func ExampleRedis_BRPop() {
 	// Output:
 	// [test-brpop three]
 }
+
+func ExampleRedis_BRPopLPush() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-brpoplpush"
+	key2 := "test-brpoplpush2"
+	r.RPush(key, "one", "two", "three")
+	fmt.Println(r.BRPopLPush(key, key2, 0))
+	fmt.Println(r.LRange(key, 0, -1))
+	fmt.Println(r.LRange(key2, 0, -1))
+
+	// Output:
+	// three
+	// [one two]
+	// [three]
+}
