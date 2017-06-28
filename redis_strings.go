@@ -152,7 +152,7 @@ func (r *Redis) IncrBy(key string, n int) int64 {
 //
 // Panic if an error occurs.
 //
-// New in redis version 1.0.0.
+// New in redis version 2.6.0.
 func (r *Redis) IncrByFloat(key string, n float64) float64 {
 	return r.doToFloat("INCRBYFLOAT", key, n)
 }
