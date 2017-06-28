@@ -131,6 +131,18 @@ func ExampleRedis_DecrBy() {
 	// 5
 }
 
+func ExampleRedis_IncrBy() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-incrby"
+	r.Set(key, "10")
+	fmt.Println(r.IncrBy(key, 5))
+
+	// Output:
+	// 15
+}
+
 func ExampleRedis_GetBit() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()

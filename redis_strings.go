@@ -139,6 +139,15 @@ func (r *Redis) DecrBy(key string, n int) int64 {
 	return r.doToInt("DECRBY", key, n)
 }
 
+// IncrBy executes the redis command INCRBY.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) IncrBy(key string, n int) int64 {
+	return r.doToInt("INCRBY", key, n)
+}
+
 // GetBit executes the redis command GETBIT.
 //
 // Panic if an error occurs.
