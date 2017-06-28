@@ -22,3 +22,17 @@ func (r *Redis) Keys(pattern string) []string {
 
 	return results
 }
+
+// Del executes the redis command DEL
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Del(key string, keys ...string) int64 {
+	args := make([]interface{}, len(keys)+1)
+	args[0] = key
+	for i, k := range keys {
+		args[i+1] = k
+	}
+	return r.doToInt("DEL", args...)
+}

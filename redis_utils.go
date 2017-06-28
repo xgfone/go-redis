@@ -17,6 +17,12 @@ func toBool(v interface{}) bool {
 	}
 }
 
+func (r *Redis) do(cmd string, args ...interface{}) {
+	if _, err := r.Do(cmd, args...); err != nil {
+		panic(err)
+	}
+}
+
 func (r *Redis) doToInt(cmd string, args ...interface{}) int64 {
 	if _r, err := r.Do(cmd, args...); err != nil {
 		panic(err)
