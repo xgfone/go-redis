@@ -82,3 +82,25 @@ func ExampleRedis_BitPos() {
 	// 16
 	// -1
 }
+
+func ExampleRedis_Decr() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+
+	key := "test-decr"
+	r.Set(key, "10")
+	fmt.Println(r.Decr(key))
+
+	r.Set(key, "234293482390480948029348230948")
+	fmt.Println(r.Decr(key))
+
+	// Output:
+	// 9
+	// ERR value is not an integer or out of range
+}

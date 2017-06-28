@@ -123,3 +123,16 @@ func (r *Redis) BitPos(key string, bit bool, args ...int) int64 {
 		return _r.(int64)
 	}
 }
+
+// Decr executes the redis command DECR.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Decr(key string) int64 {
+	if _r, err := r.Do("DECR", key); err != nil {
+		panic(err)
+	} else {
+		return _r.(int64)
+	}
+}
