@@ -36,18 +36,18 @@ type Redis struct {
 
 // NewRedis return a new Redis.
 func NewRedis(connURL string, poolSize int) *Redis {
-	rp := pools.NewResourcePool(func() (pools.Resource, error) {
-		r, err := redis.DialURL(connURL, redis.DialConnectTimeout(RedisConnTimeout))
-		return &redisConn{r}, err
-	}, poolSize, poolSize, 0)
-
-	return &Redis{
+	r := &Redis{
 		connURL:  connURL,
 		poolSize: poolSize,
-
-		ctx: context.TODO(),
-		rp:  rp,
+		ctx:      context.TODO(),
 	}
+	r.rp = pools.NewResourcePool(r.newRedisConn, poolSize, poolSize, 0)
+	return r
+}
+
+func (r *Redis) newRedisConn() (pools.Resource, error) {
+	c, err := redis.DialURL(r.connURL, redis.DialConnectTimeout(RedisConnTimeout))
+	return &redisConn{c}, err
 }
 
 // Close closes the Redis connection.

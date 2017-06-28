@@ -1,55 +1,31 @@
 package redis
 
-// PSubscribe executes the redis command PSUBSCRIBE.
+import (
+	"github.com/garyburd/redigo/redis"
+)
+
+// PubSub returns a new PubSubConn object, which use a new Redis connections.
 //
-// Panic if an error occurs.
+// This method is used to handle the subscribed datas.
 //
-// New in redis version 2.0.0.
-func (r *Redis) PSubscribe(pattern string, patterns ...string) {
-	args := make([]interface{}, len(patterns)+1)
-	args[0] = pattern
-	for i, v := range patterns {
-		args[i] = v
+// Notice: The type of the returned value is PubSubConn in the pakcage of
+// "github.com/garyburd/redigo/redis".
+//
+// If you want to publish a message to a channel, please use r.Publish(c, m).
+func (r *Redis) PubSub() redis.PubSubConn {
+	if conn, err := r.newRedisConn(); err != nil {
+		panic(err)
+	} else {
+		return redis.PubSubConn{Conn: conn.(*redisConn).Conn}
 	}
-	r.do("PSUBSCRIBE", args...)
 }
 
-// PUnsubscribe executes the redis command PUNSUBSCRIBE.
+// Publish executes the reids command PUBLISH, that's, publishs a message to
+// a channel, then returns the number of the clients which receive this message.
 //
 // Panic if an error occurs.
 //
 // New in redis version 2.0.0.
-func (r *Redis) PUnsubscribe(patterns ...string) {
-	args := make([]interface{}, len(patterns))
-	for i, v := range patterns {
-		args[i] = v
-	}
-	r.do("PUNSUBSCRIBE", args...)
-}
-
-// Subscribe executes the redis command SUBSCRIBE.
-//
-// Panic if an error occurs.
-//
-// New in redis version 2.0.0.
-func (r *Redis) Subscribe(channel string, channels ...string) {
-	args := make([]interface{}, len(channels)+1)
-	args[0] = channel
-	for i, v := range channels {
-		args[i] = v
-	}
-	r.do("SUBSCRIBE", args...)
-}
-
-// Unsubscribe executes the redis command UNSUBSCRIBE.
-//
-// Panic if an error occurs.
-//
-// New in redis version 2.0.0.
-func (r *Redis) Unsubscribe(channels ...string) {
-	args := make([]interface{}, len(channels))
-	for i, v := range channels {
-		args[i] = v
-	}
-	r.do("UNSUBSCRIBE", args...)
+func (r *Redis) Publish(channel, message string) int64 {
+	return r.doToInt("PUBLISH", channel, message)
 }
