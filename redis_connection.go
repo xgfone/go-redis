@@ -41,9 +41,18 @@ func (r *Redis) Quit() {
 
 // Select executes the redis command SELECT.
 //
-// Return an error if failed, or nil. Panic if an error occurs.
+// Panic if an error occurs.
 //
 // New in redis version 1.0.0.
 func (r *Redis) Select(index int) {
-	r.doToString("SELECT", index)
+	r.do("SELECT", index)
+}
+
+// SwapDB executes the redis command SWAPDB.
+//
+// Panic if an error occurs.
+//
+// New in redis version 4.0.0.
+func (r *Redis) SwapDB(index1, index2 int) {
+	r.do("SWAPDB", index1, index2)
 }
