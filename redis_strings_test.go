@@ -284,3 +284,18 @@ func ExampleRedis_SetEX() {
 	// Hello
 	//
 }
+
+func ExampleRedis_PSetEX() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-psetex"
+	r.PSetEX(key, 2000, "Hello")
+	fmt.Println(r.Get(key))
+	time.Sleep(2 * time.Second)
+	fmt.Println(r.Get(key))
+
+	// Output:
+	// Hello
+	//
+}

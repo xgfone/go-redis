@@ -38,11 +38,22 @@ func (r *Redis) SetEX(key string, timeout int, value string) {
 	}
 }
 
+// PSetEX executes the redis command PSETEX.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.6.0.
+func (r *Redis) PSetEX(key string, timeout int64, value string) {
+	if _, err := r.Do("PSETEX", key, timeout, value); err != nil {
+		panic(err)
+	}
+}
+
 // SetNX executes the redis command SETNX.
 //
 // Panic if an error occurs.
 //
-// New in redis version 2.0.0.
+// New in redis version 1.0.0.
 func (r *Redis) SetNX(key string, value string) bool {
 	if _r, err := r.Do("SETNX", key, value); err != nil {
 		panic(err)
