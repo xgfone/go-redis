@@ -71,3 +71,20 @@ func ExampleRedis_SInter() {
 	// Output:
 	// [c]
 }
+
+func ExampleRedis_SInterStore() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key1 := "test-sinterstore1"
+	key2 := "test-sinterstore2"
+	dest := "test-sinterstore-dest"
+	r.SAdd(key1, "a", "b", "c")
+	r.SAdd(key2, "c", "d", "e")
+	fmt.Println(r.SInterStore(dest, key1, key2))
+	fmt.Println(r.SMembers(dest))
+
+	// Output:
+	// 1
+	// [c]
+}
