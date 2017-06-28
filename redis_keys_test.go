@@ -60,6 +60,20 @@ func ExampleRedis_Expire() {
 	// false
 }
 
+func ExampleRedis_PExpire() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-pexpire"
+	r.Set(key, key)
+	fmt.Println(r.PExpire(key, 1))
+	fmt.Println(r.PExpire("nonexisting", 1))
+
+	// Output:
+	// true
+	// false
+}
+
 func ExampleRedis_ExpireAt() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()

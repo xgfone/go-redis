@@ -60,6 +60,15 @@ func (r *Redis) Expire(key string, timeout int) bool {
 	return r.doToBool("EXPIRE", key, timeout)
 }
 
+// PExpire executes the redis command PEXPIRE.
+//
+// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) PExpire(key string, timeout int) bool {
+	return r.doToBool("PEXPIRE", key, timeout)
+}
+
 // ExpireAt executes the redis command EXPIREAT.
 //
 // For the returned value, true is 1 and false is 0. Panic if an error occurs.
