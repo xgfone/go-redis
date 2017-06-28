@@ -12,7 +12,7 @@ Supply the high-level API interface based on https://github.com/garyburd/redigo
 | **HyperLogLog**   | In future |
 | **Keys**          | DEL, DUMP, EXISTS, EXPIRE, EXPIREAT, KEYS, MOVE, PERSIST, PEXPIRE, PEXPIREAT, PTTL, RANDOMKEY, RENAME, RENAMENX, TTL, TYPE | MIGRATE, OBJECT, RESTORE, SORT, WAIT, SCAN
 | **Lists**         | In future |
-| **Pub/Sub**       | PSUBSCRIBE, PUNSUBSCRIBE, SUBSCRIBE, UNSUBSCRIBE, PUBLISH | PUBSUB
+| **Pub/Sub**       | PSUBSCRIBE, PUNSUBSCRIBE, SUBSCRIBE, UNSUBSCRIBE, PUBLISH, PUBSUB |
 | **Scripting**     | In future |
 | **Server**        | In future |
 | **Sets**          | SADD, SCARD, SDIFF, SDIFFSTORE, SINTER, SINTERSTORE, SISMEMBER, SMEMBERS, SMOVE, SPOP, SRANDMEMBER, SREM, SUNION, SUNIONSTORE | SSCAN
