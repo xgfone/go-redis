@@ -83,3 +83,12 @@ func (r *Redis) LInsert(key, ba, pivot, value string) int64 {
 func (r *Redis) LLen(key string) int64 {
 	return r.doToInt("LLEN", key)
 }
+
+// LPushX executes the redis command LPUSHX.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.2.0.
+func (r *Redis) LPushX(key, value string) int64 {
+	return r.doToInt("LPUSHX", key, value)
+}
