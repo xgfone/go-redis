@@ -99,3 +99,17 @@ func ExampleRedis_LRange() {
 	// [one two three]
 	// []
 }
+
+func ExampleRedis_LRem() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-lrem"
+	r.RPush(key, "hello", "hello", "foo", "hello")
+	fmt.Println(r.LRem(key, -2, "hello"))
+	fmt.Println(r.LRange(key, 0, -1))
+
+	// Output:
+	// 2
+	// [hello foo]
+}

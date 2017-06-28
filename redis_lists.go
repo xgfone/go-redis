@@ -101,3 +101,12 @@ func (r *Redis) LPushX(key, value string) int64 {
 func (r *Redis) LRange(key string, start, stop int) []string {
 	return r.doToStringSlice("LRANGE", key, start, stop)
 }
+
+// LRem executes the redis command LREM.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) LRem(key string, count int, value string) int64 {
+	return r.doToInt("LREM", key, count, value)
+}
