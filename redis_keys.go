@@ -23,7 +23,7 @@ func (r *Redis) Keys(pattern string) []string {
 	return results
 }
 
-// Del executes the redis command DEL
+// Del executes the redis command DEL.
 //
 // Panic if an error occurs.
 //
@@ -35,4 +35,18 @@ func (r *Redis) Del(key string, keys ...string) int64 {
 		args[i+1] = k
 	}
 	return r.doToInt("DEL", args...)
+}
+
+// Exists executes the redis command EXISTS.
+//
+// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Exists(key string, keys ...string) bool {
+	args := make([]interface{}, len(keys)+1)
+	args[0] = key
+	for i, k := range keys {
+		args[i+1] = k
+	}
+	return r.doToBool("EXISTS", args...)
 }

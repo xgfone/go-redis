@@ -31,6 +31,14 @@ func (r *Redis) doToInt(cmd string, args ...interface{}) int64 {
 	}
 }
 
+func (r *Redis) doToBool(cmd string, args ...interface{}) bool {
+	if _r, err := r.Do(cmd, args...); err != nil {
+		panic(err)
+	} else {
+		return toBool(_r)
+	}
+}
+
 func (r *Redis) doToString(cmd string, args ...interface{}) string {
 	if _r, err := r.Do(cmd, args...); err != nil {
 		panic(err)

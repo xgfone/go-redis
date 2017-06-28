@@ -32,3 +32,16 @@ func ExampleRedis_Del() {
 	// Output:
 	// 2
 }
+
+func ExampleRedis_Exists() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key1 := "test-exists"
+	key2 := "test-nonexisting"
+	r.Set(key1, key1)
+	fmt.Println(r.Exists(key1, key2))
+
+	// Output:
+	// true
+}
