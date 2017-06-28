@@ -143,3 +143,12 @@ func (r *Redis) HMSet(key, field string, value interface{}, fields ...interface{
 func (r *Redis) HStrLen(key, field string) int64 {
 	return r.doToInt("HSTRLEN", key, field)
 }
+
+// HVals executes the redis command HVALS.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) HVals(key string) []string {
+	return r.doToStringSlice("HVALS", key)
+}

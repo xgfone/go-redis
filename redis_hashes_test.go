@@ -171,3 +171,15 @@ func ExampleRedis_HStrLen() {
 	// 2
 	// 4
 }
+
+func ExampleRedis_HVals() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-hvals"
+	r.HMSet(key, "f1", "Hello", "f2", "World")
+	fmt.Println(r.HVals(key))
+
+	// Output:
+	// [Hello World]
+}
