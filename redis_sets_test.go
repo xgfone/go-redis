@@ -180,3 +180,20 @@ func ExampleRedis_SUnion() {
 	// Output:
 	// [c a b d e]
 }
+
+func ExampleRedis_SUnionStore() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key1 := "test-sunionstore1"
+	key2 := "test-sunionstore2"
+	dest := "test-sunionstore-dest"
+	r.SAdd(key1, "a", "b", "c")
+	r.SAdd(key2, "c", "d", "e")
+	fmt.Println(r.SUnionStore(dest, key1, key2))
+	fmt.Println(r.SMembers(dest))
+
+	// Output:
+	// 5
+	// [c a b d e]
+}

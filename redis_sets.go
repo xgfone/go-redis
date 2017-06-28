@@ -172,3 +172,18 @@ func (r *Redis) SUnion(key string, keys ...string) []string {
 
 	return r.doToStringSlice("SUNION", args...)
 }
+
+// SUnionStore executes the redis command SUNIONSTORE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) SUnionStore(dest, key string, keys ...string) int64 {
+	args := make([]interface{}, len(keys)+2)
+	args[0] = dest
+	args[1] = key
+	for i, k := range keys {
+		args[i+2] = k
+	}
+	return r.doToInt("SUNIONSTORE", args...)
+}
