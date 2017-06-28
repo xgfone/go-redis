@@ -61,3 +61,17 @@ func (r *Redis) SDiffStore(dest, key string, keys ...string) int64 {
 	}
 	return r.doToInt("SDIFFSTORE", args...)
 }
+
+// SInter executes the redis command SINTER.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) SInter(key string, keys ...string) []string {
+	args := make([]interface{}, len(keys)+1)
+	args[0] = key
+	for i, k := range keys {
+		args[i+1] = k
+	}
+	return r.doToStringSlice("SINTER", args...)
+}
