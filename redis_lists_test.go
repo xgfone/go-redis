@@ -171,3 +171,15 @@ func ExampleRedis_LTrim() {
 	// Output:
 	// [two three]
 }
+
+func ExampleRedis_BLPop() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-blpop"
+	r.RPush(key, "one", "two", "three")
+	fmt.Println(r.BLPop(key, 0))
+
+	// Output:
+	// [test-blpop one]
+}

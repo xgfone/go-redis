@@ -146,3 +146,26 @@ func (r *Redis) LSet(key string, index int, value string) {
 func (r *Redis) LTrim(key string, start, stop int) {
 	r.do("LTRIM", key, start, stop)
 }
+
+// BLPop executes the redis command BLPOP.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) BLPop(key string, keys ...interface{}) []string {
+	_len := len(keys)
+	if _len < 1 {
+		panic(ErrInvalidArgs)
+	}
+
+	if _, ok := keys[_len-1].(int); !ok {
+		panic(ErrInvalidArgs)
+	}
+
+	args := make([]interface{}, _len+1)
+	args[0] = key
+	for i, v := range keys {
+		args[i+1] = v
+	}
+	return r.doToStringSlice("BLPOP", args...)
+}
