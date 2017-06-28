@@ -105,6 +105,20 @@ func ExampleRedis_Decr() {
 	// ERR value is not an integer or out of range
 }
 
+func ExampleRedis_Incr() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-incr"
+	r.Set(key, "10")
+	fmt.Println(r.Incr(key))
+	fmt.Println(r.Get(key))
+
+	// Output:
+	// 11
+	// 11
+}
+
 func ExampleRedis_DecrBy() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()

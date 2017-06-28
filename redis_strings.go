@@ -121,6 +121,15 @@ func (r *Redis) Decr(key string) int64 {
 	return r.doToInt("DECR", key)
 }
 
+// Incr executes the redis command INCR.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Incr(key string) int64 {
+	return r.doToInt("INCR", key)
+}
+
 // DecrBy executes the redis command DECRBY.
 //
 // Panic if an error occurs.
