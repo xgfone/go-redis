@@ -92,3 +92,12 @@ func (r *Redis) LLen(key string) int64 {
 func (r *Redis) LPushX(key, value string) int64 {
 	return r.doToInt("LPUSHX", key, value)
 }
+
+// LRange executes the redis command LRANGE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) LRange(key string, start, stop int) []string {
+	return r.doToStringSlice("LRANGE", key, start, stop)
+}

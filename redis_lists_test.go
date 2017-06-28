@@ -81,3 +81,21 @@ func ExampleRedis_LPushX() {
 	// 2
 	// 0
 }
+
+func ExampleRedis_LRange() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-lrange"
+	r.RPush(key, "one", "two", "three")
+	fmt.Println(r.LRange(key, 0, 0))
+	fmt.Println(r.LRange(key, -3, 2))
+	fmt.Println(r.LRange(key, -100, 100))
+	fmt.Println(r.LRange(key, 5, 10))
+
+	// Output:
+	// [one]
+	// [one two three]
+	// [one two three]
+	// []
+}
