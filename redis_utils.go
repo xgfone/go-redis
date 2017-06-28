@@ -4,6 +4,19 @@ import (
 	"strconv"
 )
 
+func toBool(v interface{}) bool {
+	switch v.(type) {
+	case int64:
+		_v := v.(int64)
+		if _v == 0 {
+			return false
+		}
+		return true
+	default:
+		return false
+	}
+}
+
 func (r *Redis) doToInt(cmd string, args ...interface{}) int64 {
 	if _r, err := r.Do(cmd, args...); err != nil {
 		panic(err)

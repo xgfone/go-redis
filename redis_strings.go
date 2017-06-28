@@ -27,6 +27,30 @@ func (r *Redis) Set(key string, value interface{}, args ...interface{}) {
 	}
 }
 
+// SetEX executes the redis command SETEX.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) SetEX(key string, timeout int, value string) {
+	if _, err := r.Do("SETEX", key, timeout, value); err != nil {
+		panic(err)
+	}
+}
+
+// SetNX executes the redis command SETNX.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) SetNX(key string, value string) bool {
+	if _r, err := r.Do("SETNX", key, value); err != nil {
+		panic(err)
+	} else {
+		return toBool(_r)
+	}
+}
+
 // Get executes the redis command GET.
 //
 // Panic if an error occurs. Return "" if the key does not exist.

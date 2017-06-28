@@ -2,6 +2,7 @@ package redis
 
 import (
 	"fmt"
+	"time"
 )
 
 func ExampleRedis_Set() {
@@ -251,5 +252,35 @@ func ExampleRedis_MSetNX() {
 	// false
 	// Hello
 	// World
+	//
+}
+
+func ExampleRedis_SetNX() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-setnx"
+	fmt.Println(r.SetNX(key, "Hello"))
+	fmt.Println(r.SetNX(key, "World"))
+	fmt.Println(r.Get(key))
+
+	// Output:
+	// true
+	// false
+	// Hello
+}
+
+func ExampleRedis_SetEX() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-setex"
+	r.SetEX(key, 2, "Hello")
+	fmt.Println(r.Get(key))
+	time.Sleep(2 * time.Second)
+	fmt.Println(r.Get(key))
+
+	// Output:
+	// Hello
 	//
 }
