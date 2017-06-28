@@ -100,3 +100,16 @@ func ExampleRedis_HKeys() {
 	// Output:
 	// [field1 field2]
 }
+
+func ExampleRedis_HLen() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-hlen"
+	r.HSet(key, "field1", "Hello")
+	r.HSet(key, "field2", "World")
+	fmt.Println(r.HLen(key))
+
+	// Output:
+	// 2
+}
