@@ -32,3 +32,12 @@ func (r *Redis) HDel(key, field string, fields ...string) int64 {
 	}
 	return r.doToInt("HDEL", args...)
 }
+
+// HExists executes the redis command HEXISTS.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) HExists(key, field string) bool {
+	return r.doToBool("HEXISTS", key, field)
+}

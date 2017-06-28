@@ -32,3 +32,17 @@ func ExampleRedis_HDel() {
 	// 1
 	// 0
 }
+
+func ExampleRedis_HExists() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-hexists"
+	r.HSet(key, "field1", "foo")
+	fmt.Println(r.HExists(key, "field1"))
+	fmt.Println(r.HExists(key, "field2"))
+
+	// Output:
+	// true
+	// false
+}
