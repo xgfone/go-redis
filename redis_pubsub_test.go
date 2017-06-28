@@ -19,3 +19,19 @@ func ExampleRedis_PUnsubscribe() {
 	// Subscribe
 	// Unsubscribe
 }
+
+func ExampleRedis_Unsubscribe() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-unsubscribe*"
+	r.Subscribe(key)
+	fmt.Println("Subscribe")
+
+	r.Unsubscribe(key)
+	fmt.Println("Unsubscribe")
+
+	// Output:
+	// Subscribe
+	// Unsubscribe
+}
