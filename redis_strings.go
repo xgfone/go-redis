@@ -148,6 +148,15 @@ func (r *Redis) IncrBy(key string, n int) int64 {
 	return r.doToInt("INCRBY", key, n)
 }
 
+// IncrByFloat executes the redis command INCRBYFloat.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) IncrByFloat(key string, n float64) float64 {
+	return r.doToFloat("INCRBYFLOAT", key, n)
+}
+
 // GetBit executes the redis command GETBIT.
 //
 // Panic if an error occurs.

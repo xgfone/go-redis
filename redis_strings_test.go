@@ -143,6 +143,18 @@ func ExampleRedis_IncrBy() {
 	// 15
 }
 
+func ExampleRedis_IncrByFloat() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-incrbyfloat"
+	r.Set(key, "10.50")
+	fmt.Println(r.IncrByFloat(key, 0.1))
+
+	// Output:
+	// 10.6
+}
+
 func ExampleRedis_GetBit() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
