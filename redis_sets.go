@@ -131,7 +131,7 @@ func (r *Redis) SPop(key string, count ...int) []string {
 // Return nil if the key does not exist. Panic if an error occurs.
 //
 // New in redis version 1.0.0.
-// Changed: Adding count from 3.2.
+// Changed: Adding count from 2.6.
 func (r *Redis) SRandMember(key string, count ...int) []string {
 	if len(count) == 0 {
 		if v := r.doToString("SRANDMEMBER", key); v != "" {
@@ -156,4 +156,19 @@ func (r *Redis) SRem(key, member string, members ...string) int64 {
 		args[i+2] = m
 	}
 	return r.doToInt("SREM", args...)
+}
+
+// SUnion executes the redis command SUNION.
+//
+// Return nil if the key does not exist. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) SUnion(key string, keys ...string) []string {
+	args := make([]interface{}, len(keys)+1)
+	args[0] = key
+	for i, k := range keys {
+		args[i+1] = k
+	}
+
+	return r.doToStringSlice("SUNION", args...)
 }

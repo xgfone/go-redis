@@ -166,3 +166,17 @@ func ExampleRedis_SRem() {
 	// 0
 	// [d c]
 }
+
+func ExampleRedis_SUnion() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key1 := "test-sunion1"
+	key2 := "test-sunion2"
+	r.SAdd(key1, "a", "b", "c")
+	r.SAdd(key2, "c", "d", "e")
+	fmt.Println(r.SUnion(key1, key2))
+
+	// Output:
+	// [c a b d e]
+}
