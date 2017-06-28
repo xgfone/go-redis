@@ -169,3 +169,15 @@ func ExampleRedis_RenameNX() {
 	// false
 	// test-renamenx-new
 }
+
+func ExampleRedis_Type() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-type"
+	r.Set(key, key)
+	fmt.Println(r.Type(key))
+
+	// Output:
+	// string
+}

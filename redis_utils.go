@@ -43,7 +43,13 @@ func (r *Redis) doToString(cmd string, args ...interface{}) string {
 	if _r, err := r.Do(cmd, args...); err != nil {
 		panic(err)
 	} else if _r != nil {
-		return string(_r.([]byte))
+		switch _r.(type) {
+		case string:
+			return _r.(string)
+		case []byte:
+			return string(_r.([]byte))
+		}
+
 	}
 	return ""
 }

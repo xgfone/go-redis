@@ -149,3 +149,12 @@ func (r *Redis) Rename(oldKey, newKey string) {
 func (r *Redis) RenameNX(oldKey, newKey string) bool {
 	return r.doToBool("RENAMENX", oldKey, newKey)
 }
+
+// Type executes the redis command TYPE.
+//
+// Return "" if the key does not exist. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Type(key string) string {
+	return r.doToString("TYPE", key)
+}
