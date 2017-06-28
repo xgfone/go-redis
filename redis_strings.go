@@ -228,6 +228,15 @@ func (r *Redis) GetRange(key string, start, end int) string {
 	return r.doToString("GETRANGE", key, start, end)
 }
 
+// SetRange executes the redis command SETRANGE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.2.0.
+func (r *Redis) SetRange(key string, offset int, value string) int64 {
+	return r.doToInt("SETRANGE", key, offset, value)
+}
+
 // GetSet executes the redis command GETSET.
 //
 // Panic if an error occurs.

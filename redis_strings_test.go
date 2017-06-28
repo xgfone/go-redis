@@ -191,6 +191,30 @@ func ExampleRedis_GetRange() {
 	// string
 }
 
+func ExampleRedis_SetRange() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-setrange"
+	r.Set(key, "Hello World")
+	fmt.Println(r.SetRange(key, 6, "Redis"))
+	fmt.Println(r.Get(key))
+
+	key2 := "test-setrange2"
+	fmt.Println(r.SetRange(key2, 6, "Redis"))
+
+	v := []byte(r.Get(key2))
+	fmt.Println(v[:6])
+	fmt.Println(string(v[6:]))
+
+	// Output:
+	// 11
+	// Hello Redis
+	// 11
+	// [0 0 0 0 0 0]
+	// Redis
+}
+
 func ExampleRedis_GetSet() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
