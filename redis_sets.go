@@ -134,7 +134,7 @@ func (r *Redis) SPop(key string, count ...int) []string {
 // Changed: Adding count from 3.2.
 func (r *Redis) SRandMember(key string, count ...int) []string {
 	if len(count) == 0 {
-		if v := r.doToString("SPOP", key); v != "" {
+		if v := r.doToString("SRANDMEMBER", key); v != "" {
 			return []string{v}
 		}
 		return nil
