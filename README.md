@@ -18,6 +18,6 @@ Supply the high-level API interface based on https://github.com/garyburd/redigo
 | **Sets**          | SADD, SCARD, SDIFF, SDIFFSTORE, SINTER, SINTERSTORE, SISMEMBER, SMEMBERS, SMOVE, SPOP, SRANDMEMBER, SREM, SUNION, SUNIONSTORE | SSCAN
 | **Sorted Sets**   | In future |
 | **String**        | APPEND, BITCOUNT, BITOP, BITPOS, DECR, DECRBY, GET, GETBIT, GETRANGE, GETSET, INCR, INCRBY, INCRBYFLOAT, MGET, MSET, MSETNX, PSETEX, SET, SETBIT, SETEX, SETNX, SETRANGE, STRLEN | BITFIELD
-| **Transactions**  | In futrue |
+| **Transactions**  | DISCARD, EXEC, MULTI, WATCH, UNWATCH |
 
 **Notice:** For the unimplemented commands, you can use the Do method, `func (r *Redis) Do(cmd string, args ...interface{}) (reply interface{}, err error)`, to implement it. Welcome to give me a pull request.
