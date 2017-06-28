@@ -1,5 +1,9 @@
 package redis
 
+import (
+	"strings"
+)
+
 // LPush executes the redis command LPUSH.
 //
 // Panic if an error occurs.
@@ -55,4 +59,18 @@ func (r *Redis) RPop(key string) string {
 // New in redis version 1.0.0.
 func (r *Redis) LIndex(key string, index int) string {
 	return r.doToString("LINDEX", key, index)
+}
+
+// LInsert executes the redis command LINSERT.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.2.0.
+func (r *Redis) LInsert(key, ba, pivot, value string) int64 {
+	ba = strings.ToUpper(ba)
+	if ba != "BEFORE" && ba != "AFTER" {
+		panic(ErrInvalidArgs)
+	}
+
+	return r.doToInt("LINSERT", key, ba, pivot, value)
 }

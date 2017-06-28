@@ -43,3 +43,15 @@ func ExampleRedis_LIndex() {
 	// c
 	//
 }
+
+func ExampleRedis_LInsert() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-linsert"
+	r.RPush(key, "Hello", "World")
+	fmt.Println(r.LInsert(key, "before", "World", "There"))
+
+	// Output:
+	// 3
+}
