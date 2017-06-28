@@ -131,3 +131,12 @@ func (r *Redis) PTTL(key string) int64 {
 func (r *Redis) RandomKey() string {
 	return r.doToString("RANDOMKEY")
 }
+
+// Rename executes the redis command RENAME.
+//
+// Return "" if no key exist.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Rename(oldKey, newKey string) {
+	r.do("RENAME", oldKey, newKey)
+}

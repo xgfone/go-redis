@@ -132,10 +132,24 @@ func ExampleRedis_PTTL() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	key := "test-ttl"
+	key := "test-pttl"
 	r.SetEX(key, 1, key)
 	fmt.Println(r.PTTL(key))
 
 	// Output:
 	// 1000
+}
+
+func ExampleRedis_Rename() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-rename"
+	newKey := key + "-new"
+	r.Set(key, key)
+	r.Rename(key, newKey)
+	fmt.Println(r.Get(newKey))
+
+	// Output:
+	// test-rename
 }
