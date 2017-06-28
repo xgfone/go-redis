@@ -323,3 +323,17 @@ func ExampleRedis_PSetEX() {
 	// Hello
 	//
 }
+
+func ExampleRedis_StrLen() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-psetex"
+	r.Set(key, "Hello World")
+	fmt.Println(r.StrLen(key))
+	fmt.Println(r.StrLen("nonexisting"))
+
+	// Output:
+	// 11
+	// 0
+}

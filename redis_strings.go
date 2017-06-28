@@ -297,3 +297,12 @@ func (r *Redis) MSet(key, value string, kvs ...string) {
 func (r *Redis) MSetNX(key, value string, kvs ...string) bool {
 	return toBool(r.mSet("MSETNX", key, value, kvs...))
 }
+
+// StrLen executes the redis command STRLEN.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.2.0.
+func (r *Redis) StrLen(key string) int64 {
+	return r.doToInt("STRLEN", key)
+}
