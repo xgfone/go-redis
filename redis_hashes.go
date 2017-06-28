@@ -68,3 +68,12 @@ func (r *Redis) HIncrBy(key, field string, n int64) int64 {
 func (r *Redis) HIncrByFloat(key, field string, n float64) float64 {
 	return r.doToFloat("HINCRBYFLOAT", key, field, n)
 }
+
+// HKeys executes the redis command HKEYS.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) HKeys(key string) []string {
+	return r.doToStringSlice("HKEYS", key)
+}

@@ -87,3 +87,16 @@ func ExampleRedis_HIncrByFloat() {
 	// Output:
 	// 10.6
 }
+
+func ExampleRedis_HKeys() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-hkeys"
+	r.HSet(key, "field1", "Hello")
+	r.HSet(key, "field2", "World")
+	fmt.Println(r.HKeys(key))
+
+	// Output:
+	// [field1 field2]
+}
