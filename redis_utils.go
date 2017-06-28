@@ -78,6 +78,10 @@ func (r *Redis) doToStringSlice(cmd string, args ...interface{}) []string {
 	if _r, err := r.Do(cmd, args...); err != nil {
 		panic(err)
 	} else if _r != nil {
+		if bs, ok := _r.([]byte); ok {
+			return []string{string(bs)}
+		}
+
 		vs := _r.([]interface{})
 		results := make([]string, len(vs))
 		for i, v := range vs {

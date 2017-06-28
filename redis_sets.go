@@ -108,3 +108,20 @@ func (r *Redis) SIsMember(key, member string) bool {
 func (r *Redis) SMove(src, dst, member string) bool {
 	return r.doToBool("SMOVE", src, dst, member)
 }
+
+// SPop executes the redis command SPOP.
+//
+// Return nil if the key does not exist. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+// Changed: Adding count from 3.2.
+func (r *Redis) SPop(key string, count ...int) []string {
+	if len(count) == 0 {
+		return r.doToStringSlice("SPOP", key)
+	}
+
+	if count[0] < 1 {
+		panic(ErrInvalidArgs)
+	}
+	return r.doToStringSlice("SPOP", key, count[0])
+}

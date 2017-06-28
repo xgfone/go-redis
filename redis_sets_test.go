@@ -120,3 +120,17 @@ func ExampleRedis_SMove() {
 	// [b a]
 	// [d c]
 }
+
+func ExampleRedis_SPop() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-pop"
+	r.SAdd(key, "a", "b", "c")
+	fmt.Println(len(r.SPop(key)))
+	fmt.Println(len(r.SPop(key, 3)))
+
+	// Output:
+	// 1
+	// 2
+}
