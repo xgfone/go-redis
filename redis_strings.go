@@ -216,12 +216,7 @@ func (r *Redis) MGet(key string, keys ...string) []string {
 	return r.doToStringSlice("MGET", args...)
 }
 
-// MSet executes the redis command MSET.
-//
-// If a certain key does not exist, this value is "". Panic if an error occurs.
-//
-// New in redis version 1.0.0.
-func (r *Redis) MSet(key, value string, kvs ...string) {
+func (r *Redis) mSet(cmd, key, value string, kvs ...string) interface{} {
 	_len := len(kvs)
 	if _len%2 != 0 {
 		panic(ErrInvalidArgs)
@@ -234,7 +229,31 @@ func (r *Redis) MSet(key, value string, kvs ...string) {
 		args[i+2] = a
 	}
 
-	if _, err := r.Do("MSET", args...); err != nil {
+	if _r, err := r.Do(cmd, args...); err != nil {
 		panic(err)
+	} else {
+		return _r
 	}
+}
+
+// MSet executes the redis command MSET.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.1.
+func (r *Redis) MSet(key, value string, kvs ...string) {
+	r.mSet("MSET", key, value, kvs...)
+}
+
+// MSetNX executes the redis command MSETNX.
+//
+// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+//
+// New in redis version 1.0.1.
+func (r *Redis) MSetNX(key, value string, kvs ...string) bool {
+	_r := r.mSet("MSETNX", key, value, kvs...).(int64)
+	if _r == 0 {
+		return false
+	}
+	return true
 }

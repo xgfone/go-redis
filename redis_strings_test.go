@@ -232,3 +232,24 @@ func ExampleRedis_MSet() {
 	// Hello
 	// World
 }
+
+func ExampleRedis_MSetNX() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key1 := "test-msetnx1"
+	key2 := "test-msetnx2"
+	key3 := "test-msetnx3"
+	fmt.Println(r.MSetNX(key1, "Hello", key2, "World"))
+	fmt.Println(r.MSetNX(key2, "there", key3, "there"))
+	fmt.Println(r.Get(key1))
+	fmt.Println(r.Get(key2))
+	fmt.Println(r.Get(key3))
+
+	// Output:
+	// true
+	// false
+	// Hello
+	// World
+	//
+}
