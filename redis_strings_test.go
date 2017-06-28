@@ -151,3 +151,17 @@ func ExampleRedis_GetRange() {
 	// This is a string
 	// string
 }
+
+func ExampleRedis_GetSet() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-getset"
+	r.Set(key, "1")
+	fmt.Println(r.GetSet(key, "2"))
+	fmt.Println(r.Get(key))
+
+	// Output:
+	// 1
+	// 2
+}

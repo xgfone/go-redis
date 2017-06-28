@@ -165,3 +165,12 @@ func (r *Redis) SetBit(key string, offset int, value bool) int64 {
 func (r *Redis) GetRange(key string, start, end int) string {
 	return r.doToString("GETRANGE", key, start, end)
 }
+
+// GetSet executes the redis command GETSET.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) GetSet(key, value string) string {
+	return r.doToString("GETSET", key, value)
+}
