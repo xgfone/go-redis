@@ -118,7 +118,16 @@ func (r *Redis) TTL(key string) int64 {
 //
 // Panic if an error occurs.
 //
-// New in redis version 1.0.0.
+// New in redis version 2.6.0.
 func (r *Redis) PTTL(key string) int64 {
 	return r.doToInt("PTTL", key)
+}
+
+// RandomKey executes the redis command RANDOMKEY.
+//
+// Panic if an error occurs. Return "" if no key exist.
+//
+// New in redis version 1.0.0.
+func (r *Redis) RandomKey() string {
+	return r.doToString("RANDOMKEY")
 }
