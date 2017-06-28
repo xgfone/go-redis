@@ -113,3 +113,17 @@ func ExampleRedis_LRem() {
 	// 2
 	// [hello foo]
 }
+
+func ExampleRedis_LSet() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-lset"
+	r.RPush(key, "one", "two", "three")
+	r.LSet(key, 0, "four")
+	r.LSet(key, -2, "five")
+	fmt.Println(r.LRange(key, 0, -1))
+
+	// Output:
+	// [four five three]
+}

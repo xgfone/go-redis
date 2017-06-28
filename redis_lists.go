@@ -110,3 +110,12 @@ func (r *Redis) LRange(key string, start, stop int) []string {
 func (r *Redis) LRem(key string, count int, value string) int64 {
 	return r.doToInt("LREM", key, count, value)
 }
+
+// LSet executes the redis command LSET.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) LSet(key string, index int, value string) {
+	r.do("LSET", key, index, value)
+}
