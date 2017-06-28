@@ -9,7 +9,7 @@ Supply the high-level API interface based on https://github.com/garyburd/redigo
 | **Connection**    | AUTH, ECHO, PING, QUIT, SELECT, SWAPDB(from redis 4.0) |
 | **Geo**           | In future |
 | **Hashes**        | In future |
-| **HyperLogLog**   | In future |
+| **HyperLogLog**   | PFADD, PFCOUNT, PFMERGE |
 | **Keys**          | DEL, DUMP, EXISTS, EXPIRE, EXPIREAT, KEYS, MOVE, PERSIST, PEXPIRE, PEXPIREAT, PTTL, RANDOMKEY, RENAME, RENAMENX, TTL, TYPE | MIGRATE, OBJECT, RESTORE, SORT, WAIT, SCAN
 | **Lists**         | BLPOP, BRPOP, BRPOPLPUSH, LINDEX, LINSERT, LLEN, LPOP, LPUSH, LPUSHX, LRANGE, LREM, LSET, LTRIM, RPOP, RPOPLPUSH, RPUSH, RPUSHX |
 | **Pub/Sub**       | PSUBSCRIBE, PUNSUBSCRIBE, SUBSCRIBE, UNSUBSCRIBE, PUBLISH, PUBSUB |
