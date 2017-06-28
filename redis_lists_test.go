@@ -82,6 +82,20 @@ func ExampleRedis_LPushX() {
 	// 0
 }
 
+func ExampleRedis_RPushX() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-rpushx"
+	r.RPush(key, "Hello")
+	fmt.Println(r.RPushX(key, "World"))
+	fmt.Println(r.RPushX("nonexisting", "World"))
+
+	// Output:
+	// 2
+	// 0
+}
+
 func ExampleRedis_LRange() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()

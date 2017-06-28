@@ -93,6 +93,15 @@ func (r *Redis) LPushX(key, value string) int64 {
 	return r.doToInt("LPUSHX", key, value)
 }
 
+// RPushX executes the redis command RPUSHX.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.2.0.
+func (r *Redis) RPushX(key, value string) int64 {
+	return r.doToInt("RPUSHX", key, value)
+}
+
 // LRange executes the redis command LRANGE.
 //
 // Panic if an error occurs.
