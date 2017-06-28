@@ -19,6 +19,21 @@ func ExampleRedis_HGet() {
 	//
 }
 
+func ExampleRedis_HSetNX() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-hsetnx"
+	fmt.Println(r.HSetNX(key, "field", "Hello"))
+	fmt.Println(r.HSetNX(key, "field", "World"))
+	fmt.Println(r.HGet(key, "field"))
+
+	// Output:
+	// true
+	// false
+	// Hello
+}
+
 func ExampleRedis_HDel() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()

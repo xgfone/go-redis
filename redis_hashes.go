@@ -9,6 +9,15 @@ func (r *Redis) HSet(key, field string, value interface{}) bool {
 	return r.doToBool("HSET", key, field, value)
 }
 
+// HSetNX executes the redis command HSETNX.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) HSetNX(key, field string, value interface{}) bool {
+	return r.doToBool("HSETNX", key, field, value)
+}
+
 // HGet executes the redis command HGET.
 //
 // Panic if an error occurs.
