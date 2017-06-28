@@ -15,3 +15,15 @@ func ExampleRedis_SAdd() {
 	// Output:
 	// [1 2 3]
 }
+
+func ExampleRedis_SCard() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-scard"
+	r.SAdd(key, "1", "2", "3")
+	fmt.Println(r.SCard(key))
+
+	// Output:
+	// 3
+}

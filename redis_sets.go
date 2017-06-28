@@ -23,3 +23,12 @@ func (r *Redis) SAdd(key string, member string, members ...string) int64 {
 func (r *Redis) SMembers(key string) []string {
 	return r.doToStringSlice("SMEMBERS", key)
 }
+
+// SCard executes the redis command SCARD.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) SCard(key string) int64 {
+	return r.doToInt("SCARD", key)
+}
