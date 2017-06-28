@@ -45,3 +45,17 @@ func ExampleRedis_Exists() {
 	// Output:
 	// true
 }
+
+func ExampleRedis_Expire() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-expire"
+	r.Set(key, key)
+	fmt.Println(r.Expire(key, 1))
+	fmt.Println(r.Expire("nonexisting", 1))
+
+	// Output:
+	// true
+	// false
+}

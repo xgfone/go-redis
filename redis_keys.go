@@ -50,3 +50,12 @@ func (r *Redis) Exists(key string, keys ...string) bool {
 	}
 	return r.doToBool("EXISTS", args...)
 }
+
+// Expire executes the redis command EXPIRE.
+//
+// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Expire(key string, timeout int) bool {
+	return r.doToBool("EXPIRE", key, timeout)
+}
