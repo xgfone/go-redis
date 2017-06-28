@@ -46,3 +46,16 @@ func ExampleRedis_HExists() {
 	// true
 	// false
 }
+
+func ExampleRedis_HGetAll() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-hgetall"
+	r.HSet(key, "field1", "foo")
+	r.HSet(key, "field2", "bar")
+	fmt.Println(r.HGetAll(key))
+
+	// Output:
+	// [field1 foo field2 bar]
+}

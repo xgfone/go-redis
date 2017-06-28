@@ -41,3 +41,12 @@ func (r *Redis) HDel(key, field string, fields ...string) int64 {
 func (r *Redis) HExists(key, field string) bool {
 	return r.doToBool("HEXISTS", key, field)
 }
+
+// HGetAll executes the redis command HGETALL.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) HGetAll(key string) []string {
+	return r.doToStringSlice("HGETALL", key)
+}
