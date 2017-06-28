@@ -45,3 +45,12 @@ func (r *Redis) Ping(msg ...string) string {
 func (r *Redis) Quit() {
 	r.do("QUIT")
 }
+
+// Select executes the redis command SELECT.
+//
+// Return an error if failed, or nil. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Select(index int) {
+	r.doToString("SELECT", index)
+}

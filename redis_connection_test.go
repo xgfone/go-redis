@@ -27,3 +27,19 @@ func ExampleRedis_Ping() {
 	// [test-ping]
 	// PONG
 }
+
+func ExampleRedis_Select() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	r.Select(1)
+	r.Select(100)
+
+	// Output:
+	// ERR invalid DB index
+}
