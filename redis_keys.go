@@ -134,9 +134,18 @@ func (r *Redis) RandomKey() string {
 
 // Rename executes the redis command RENAME.
 //
-// Return "" if no key exist.
+// Panic if an error occurs.
 //
 // New in redis version 1.0.0.
 func (r *Redis) Rename(oldKey, newKey string) {
 	r.do("RENAME", oldKey, newKey)
+}
+
+// RenameNX executes the redis command RENAMENX.
+//
+// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) RenameNX(oldKey, newKey string) bool {
+	return r.doToBool("RENAMENX", oldKey, newKey)
 }
