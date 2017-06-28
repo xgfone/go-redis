@@ -125,3 +125,20 @@ func (r *Redis) SPop(key string, count ...int) []string {
 	}
 	return r.doToStringSlice("SPOP", key, count[0])
 }
+
+// SRandMember executes the redis command SRANDMEMBER.
+//
+// Return nil if the key does not exist. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+// Changed: Adding count from 3.2.
+func (r *Redis) SRandMember(key string, count ...int) []string {
+	if len(count) == 0 {
+		if v := r.doToString("SPOP", key); v != "" {
+			return []string{v}
+		}
+		return nil
+	}
+
+	return r.doToStringSlice("SRANDMEMBER", key, count[0])
+}

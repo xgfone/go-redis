@@ -125,7 +125,7 @@ func ExampleRedis_SPop() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	key := "test-pop"
+	key := "test-spop"
 	r.SAdd(key, "a", "b", "c")
 	fmt.Println(len(r.SPop(key)))
 	fmt.Println(len(r.SPop(key, 3)))
@@ -133,4 +133,20 @@ func ExampleRedis_SPop() {
 	// Output:
 	// 1
 	// 2
+}
+
+func ExampleRedis_SRandMember() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-srandmember"
+	r.SAdd(key, "a", "b", "c")
+	fmt.Println(len(r.SRandMember(key)))
+	fmt.Println(len(r.SRandMember(key, 2)))
+	fmt.Println(len(r.SRandMember(key, -5)))
+
+	// Output:
+	// 1
+	// 2
+	// 5
 }
