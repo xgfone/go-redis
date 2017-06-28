@@ -68,3 +68,12 @@ func (r *Redis) Expire(key string, timeout int) bool {
 func (r *Redis) ExpireAt(key string, timestamp int) bool {
 	return r.doToBool("EXPIREAT", key, timestamp)
 }
+
+// Move executes the redis command MOVE.
+//
+// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Move(key string, db int) bool {
+	return r.doToBool("MOVE", key, db)
+}
