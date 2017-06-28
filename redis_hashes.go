@@ -101,3 +101,27 @@ func (r *Redis) HMGet(key, field string, fields ...string) []string {
 	}
 	return r.doToStringSlice("HMGET", args...)
 }
+
+// HMSet executes the redis command HMSet.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) HMSet(key, field string, value interface{}, fields ...interface{}) {
+	_len := len(fields)
+	if _len%2 != 0 {
+		panic(ErrInvalidArgs)
+	}
+
+	args := make([]interface{}, _len+3)
+	args[0] = key
+	args[1] = field
+	args[2] = value
+	for i, a := range fields {
+		args[i+3] = a
+	}
+
+	if _, err := r.Do("HMSET", args...); err != nil {
+		panic(err)
+	}
+}
