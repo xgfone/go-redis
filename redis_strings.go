@@ -59,21 +59,16 @@ func (r *Redis) Append(key, value string) {
 // New in redis version 2.6.0.
 func (r *Redis) BitCount(key string, args ...int) int64 {
 	_len := len(args)
-	if _len != 0 && _len != 2 {
+	var _args []interface{}
+	if _len == 0 {
+		_args = []interface{}{key}
+	} else if _len == 2 {
+		_args = []interface{}{key, args[0], args[1]}
+	} else {
 		panic(ErrInvalidArgs)
 	}
 
-	var reply interface{}
-	var err error
-	if _len == 0 {
-		reply, err = r.Do("BITCOUNT", key)
-	} else {
-		reply, err = r.Do("BITCOUNT", key, args[0], args[1])
-	}
-	if err != nil {
-		panic(err)
-	}
-	return reply.(int64)
+	return r.doToInt("BITCOUNT", _args...)
 }
 
 // BitOp executes the redis command BITOP.
@@ -97,11 +92,7 @@ func (r *Redis) BitOp(op, dest, src string, srcs ...string) int64 {
 		args[i+3] = s
 	}
 
-	if _r, err := r.Do("BITOP", args...); err != nil {
-		panic(err)
-	} else {
-		return _r.(int64)
-	}
+	return r.doToInt("BITOP", args...)
 }
 
 // BitPos executes the redis command BITPOS.
@@ -123,11 +114,7 @@ func (r *Redis) BitPos(key string, bit bool, args ...int) int64 {
 		_args[i+2] = a
 	}
 
-	if _r, err := r.Do("BITPOS", _args...); err != nil {
-		panic(err)
-	} else {
-		return _r.(int64)
-	}
+	return r.doToInt("BITPOS", _args...)
 }
 
 // Decr executes the redis command DECR.
@@ -136,11 +123,7 @@ func (r *Redis) BitPos(key string, bit bool, args ...int) int64 {
 //
 // New in redis version 1.0.0.
 func (r *Redis) Decr(key string) int64 {
-	if _r, err := r.Do("DECR", key); err != nil {
-		panic(err)
-	} else {
-		return _r.(int64)
-	}
+	return r.doToInt("DECR", key)
 }
 
 // DecrBy executes the redis command DECRBY.
@@ -149,11 +132,7 @@ func (r *Redis) Decr(key string) int64 {
 //
 // New in redis version 1.0.0.
 func (r *Redis) DecrBy(key string, n int) int64 {
-	if _r, err := r.Do("DECRBY", key, n); err != nil {
-		panic(err)
-	} else {
-		return _r.(int64)
-	}
+	return r.doToInt("DECRBY", key, n)
 }
 
 // GetBit executes the redis command GETBIT.
