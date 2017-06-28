@@ -116,3 +116,20 @@ func ExampleRedis_DecrBy() {
 	// Output:
 	// 5
 }
+
+func ExampleRedis_GetBit() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-getbit"
+	fmt.Println(r.SetBit(key, 7, true))
+	fmt.Println(r.GetBit(key, 0))
+	fmt.Println(r.GetBit(key, 7))
+	fmt.Println(r.GetBit(key, 100))
+
+	// Output:
+	// 0
+	// 0
+	// 1
+	// 0
+}

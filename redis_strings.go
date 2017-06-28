@@ -155,3 +155,30 @@ func (r *Redis) DecrBy(key string, n int) int64 {
 		return _r.(int64)
 	}
 }
+
+// GetBit executes the redis command GETBIT.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.2.0.
+func (r *Redis) GetBit(key string, offset int) int64 {
+	return r.doToInt("GETBIT", key, offset)
+}
+
+// SetBit executes the redis command SETBIT.
+//
+// For the argument, value, true is 1 and false is 0.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.2.0.
+func (r *Redis) SetBit(key string, offset int, value bool) int64 {
+	var v int8
+	if value {
+		v = 1
+	} else {
+		v = 0
+	}
+
+	return r.doToInt("SETBIT", key, offset, v)
+}
