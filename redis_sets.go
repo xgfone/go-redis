@@ -46,3 +46,18 @@ func (r *Redis) SDiff(key string, keys ...string) []string {
 	}
 	return r.doToStringSlice("SDIFF", args...)
 }
+
+// SDiffStore executes the redis command SDIFFSTORE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) SDiffStore(dest, key string, keys ...string) int64 {
+	args := make([]interface{}, len(keys)+2)
+	args[0] = dest
+	args[1] = key
+	for i, k := range keys {
+		args[i+2] = k
+	}
+	return r.doToInt("SDIFFSTORE", args...)
+}

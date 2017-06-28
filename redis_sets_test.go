@@ -41,3 +41,20 @@ func ExampleRedis_SDiff() {
 	// Output:
 	// [a b]
 }
+
+func ExampleRedis_SDiffStore() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key1 := "test-sdiffstore1"
+	key2 := "test-sdiffstore2"
+	dest := "test-sdiffstore-dest"
+	r.SAdd(key1, "a", "b", "c")
+	r.SAdd(key2, "c", "d", "e")
+	fmt.Println(r.SDiffStore(dest, key1, key2))
+	fmt.Println(r.SMembers(dest))
+
+	// Output:
+	// 2
+	// [a b]
+}
