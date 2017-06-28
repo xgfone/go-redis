@@ -136,3 +136,16 @@ func (r *Redis) Decr(key string) int64 {
 		return _r.(int64)
 	}
 }
+
+// Decr executes the redis command DECR.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) DecrBy(key string, n int) int64 {
+	if _r, err := r.Do("DECRBY", key, n); err != nil {
+		panic(err)
+	} else {
+		return _r.(int64)
+	}
+}
