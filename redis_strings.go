@@ -260,7 +260,7 @@ func (r *Redis) MGet(key string, keys ...string) []string {
 	return r.doToStringSlice("MGET", args...)
 }
 
-func (r *Redis) mSet(cmd, key, value string, kvs ...string) interface{} {
+func (r *Redis) mSet(cmd, key string, value interface{}, kvs ...interface{}) interface{} {
 	_len := len(kvs)
 	if _len%2 != 0 {
 		panic(ErrInvalidArgs)
@@ -285,7 +285,7 @@ func (r *Redis) mSet(cmd, key, value string, kvs ...string) interface{} {
 // Panic if an error occurs.
 //
 // New in redis version 1.0.1.
-func (r *Redis) MSet(key, value string, kvs ...string) {
+func (r *Redis) MSet(key string, value interface{}, kvs ...interface{}) {
 	r.mSet("MSET", key, value, kvs...)
 }
 
@@ -294,7 +294,7 @@ func (r *Redis) MSet(key, value string, kvs ...string) {
 // For the returned value, true is 1 and false is 0. Panic if an error occurs.
 //
 // New in redis version 1.0.1.
-func (r *Redis) MSetNX(key, value string, kvs ...string) bool {
+func (r *Redis) MSetNX(key string, value interface{}, kvs ...interface{}) bool {
 	return toBool(r.mSet("MSETNX", key, value, kvs...))
 }
 
