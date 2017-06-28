@@ -77,3 +77,12 @@ func (r *Redis) ExpireAt(key string, timestamp int) bool {
 func (r *Redis) Move(key string, db int) bool {
 	return r.doToBool("MOVE", key, db)
 }
+
+// Persist executes the redis command PERSIST.
+//
+// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+//
+// New in redis version 2.2.0.
+func (r *Redis) Persist(key string) bool {
+	return r.doToBool("PERSIST", key)
+}
