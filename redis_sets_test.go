@@ -27,3 +27,17 @@ func ExampleRedis_SCard() {
 	// Output:
 	// 3
 }
+
+func ExampleRedis_SDiff() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key1 := "test-sdiff1"
+	key2 := "test-sdiff2"
+	r.SAdd(key1, "a", "b", "c")
+	r.SAdd(key2, "c", "d", "e")
+	fmt.Println(r.SDiff(key1, key2))
+
+	// Output:
+	// [a b]
+}
