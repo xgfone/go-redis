@@ -86,3 +86,18 @@ func (r *Redis) HKeys(key string) []string {
 func (r *Redis) HLen(key string) int64 {
 	return r.doToInt("HLEN", key)
 }
+
+// HMGet executes the redis command HMGet.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) HMGet(key, field string, fields ...string) []string {
+	args := make([]interface{}, len(fields)+2)
+	args[0] = key
+	args[1] = field
+	for i, v := range fields {
+		args[i+2] = v
+	}
+	return r.doToStringSlice("HMGET", args...)
+}

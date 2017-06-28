@@ -113,3 +113,16 @@ func ExampleRedis_HLen() {
 	// Output:
 	// 2
 }
+
+func ExampleRedis_HMGet() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-hmget"
+	r.HSet(key, "field1", "Hello")
+	r.HSet(key, "field2", "World")
+	fmt.Println(r.HMGet(key, "field1", "field2", "nofield"))
+
+	// Output:
+	// [Hello World ]
+}
