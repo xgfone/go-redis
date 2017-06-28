@@ -150,3 +150,19 @@ func ExampleRedis_SRandMember() {
 	// 2
 	// 5
 }
+
+func ExampleRedis_SRem() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-srem"
+	r.SAdd(key, "a", "b", "c", "d")
+	fmt.Println(r.SRem(key, "a", "b"))
+	fmt.Println(r.SRem(key, "z"))
+	fmt.Println(r.SMembers(key))
+
+	// Output:
+	// 2
+	// 0
+	// [d c]
+}

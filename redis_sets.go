@@ -142,3 +142,18 @@ func (r *Redis) SRandMember(key string, count ...int) []string {
 
 	return r.doToStringSlice("SRANDMEMBER", key, count[0])
 }
+
+// SRem executes the redis command SREM.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) SRem(key, member string, members ...string) int64 {
+	args := make([]interface{}, len(members)+2)
+	args[0] = key
+	args[1] = member
+	for i, m := range members {
+		args[i+2] = m
+	}
+	return r.doToInt("SREM", args...)
+}
