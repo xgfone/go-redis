@@ -4,6 +4,21 @@ import (
 	"fmt"
 )
 
+func ExampleRedis_Auth() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	r.Auth("")
+
+	// Output:
+	// ERR Client sent AUTH, but no password is set
+}
+
 func ExampleRedis_Echo() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
