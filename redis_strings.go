@@ -43,7 +43,7 @@ func (r *Redis) SetEX(key string, timeout int, value string) {
 // Panic if an error occurs.
 //
 // New in redis version 2.6.0.
-func (r *Redis) PSetEX(key string, timeout int64, value string) {
+func (r *Redis) PSetEX(key string, timeout int, value string) {
 	if _, err := r.Do("PSETEX", key, timeout, value); err != nil {
 		panic(err)
 	}
