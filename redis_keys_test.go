@@ -115,3 +115,27 @@ func ExampleRedis_Persist() {
 	// true
 	// false
 }
+
+func ExampleRedis_TTL() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-ttl"
+	r.SetEX(key, 5, key)
+	fmt.Println(r.TTL(key))
+
+	// Output:
+	// 5
+}
+
+func ExampleRedis_PTTL() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-ttl"
+	r.SetEX(key, 1, key)
+	fmt.Println(r.PTTL(key))
+
+	// Output:
+	// 1000
+}

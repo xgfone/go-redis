@@ -104,3 +104,21 @@ func (r *Redis) Move(key string, db int) bool {
 func (r *Redis) Persist(key string) bool {
 	return r.doToBool("PERSIST", key)
 }
+
+// TTL executes the redis command TTL.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) TTL(key string) int64 {
+	return r.doToInt("TTL", key)
+}
+
+// PTTL executes the redis command PTTL.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) PTTL(key string) int64 {
+	return r.doToInt("PTTL", key)
+}
