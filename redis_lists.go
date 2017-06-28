@@ -74,3 +74,12 @@ func (r *Redis) LInsert(key, ba, pivot, value string) int64 {
 
 	return r.doToInt("LINSERT", key, ba, pivot, value)
 }
+
+// LLen executes the redis command LLEN.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) LLen(key string) int64 {
+	return r.doToInt("LLEN", key)
+}
