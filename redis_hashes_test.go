@@ -75,3 +75,15 @@ func ExampleRedis_HIncrBy() {
 	// 5
 	// -5
 }
+
+func ExampleRedis_HIncrByFloat() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-hincebyfloat"
+	r.HSet(key, "field", 10.50)
+	fmt.Println(r.HIncrByFloat(key, "field", 0.1))
+
+	// Output:
+	// 10.6
+}

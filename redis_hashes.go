@@ -59,3 +59,12 @@ func (r *Redis) HGetAll(key string) []string {
 func (r *Redis) HIncrBy(key, field string, n int64) int64 {
 	return r.doToInt("HINCRBY", key, field, n)
 }
+
+// HIncrByFloat executes the redis command HINCRBYFLOAT.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.6.0.
+func (r *Redis) HIncrByFloat(key, field string, n float64) float64 {
+	return r.doToFloat("HINCRBYFLOAT", key, field, n)
+}
