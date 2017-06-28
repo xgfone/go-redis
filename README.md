@@ -6,7 +6,7 @@ Supply the high-level API interface based on https://github.com/garyburd/redigo
 |                   |   Implemented Commands   |  Unimplemented Commands
 |-------------------|--------------------------|---------------------------
 | **Cluster**       | In future |
-| **Connection**    | AUTH, ECHO, PING, QUIT, SELECT, SWAPDB(from redis 4.0)) |
+| **Connection**    | AUTH, ECHO, PING, QUIT, SELECT, SWAPDB(from redis 4.0) |
 | **Geo**           | In future |
 | **Hashes**        | In future |
 | **HyperLogLog**   | In future |
