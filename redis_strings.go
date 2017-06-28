@@ -275,9 +275,5 @@ func (r *Redis) MSet(key, value string, kvs ...string) {
 //
 // New in redis version 1.0.1.
 func (r *Redis) MSetNX(key, value string, kvs ...string) bool {
-	_r := r.mSet("MSETNX", key, value, kvs...).(int64)
-	if _r == 0 {
-		return false
-	}
-	return true
+	return toBool(r.mSet("MSETNX", key, value, kvs...))
 }
