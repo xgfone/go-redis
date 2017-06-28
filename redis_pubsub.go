@@ -5,8 +5,13 @@ package redis
 // Panic if an error occurs.
 //
 // New in redis version 2.0.0.
-func (r *Redis) PSubscribe(pattern string) {
-	r.do("PSUBSCRIBE", pattern)
+func (r *Redis) PSubscribe(pattern string, patterns ...string) {
+	args := make([]interface{}, len(patterns)+1)
+	args[0] = pattern
+	for i, v := range patterns {
+		args[i] = v
+	}
+	r.do("PSUBSCRIBE", args...)
 }
 
 // PUnsubscribe executes the redis command PUNSUBSCRIBE.
@@ -16,8 +21,8 @@ func (r *Redis) PSubscribe(pattern string) {
 // New in redis version 2.0.0.
 func (r *Redis) PUnsubscribe(patterns ...string) {
 	args := make([]interface{}, len(patterns))
-	for i, p := range patterns {
-		args[i] = p
+	for i, v := range patterns {
+		args[i] = v
 	}
 	r.do("PUNSUBSCRIBE", args...)
 }
