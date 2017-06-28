@@ -133,3 +133,21 @@ func ExampleRedis_GetBit() {
 	// 1
 	// 0
 }
+
+func ExampleRedis_GetRange() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-getrange"
+	r.Set(key, "This is a string")
+	fmt.Println(r.GetRange(key, 0, 3))
+	fmt.Println(r.GetRange(key, -3, -1))
+	fmt.Println(r.GetRange(key, 0, -1))
+	fmt.Println(r.GetRange(key, 10, 100))
+
+	// Output:
+	// This
+	// ing
+	// This is a string
+	// string
+}
