@@ -161,3 +161,12 @@ func (r *Redis) SetBit(key string, offset int, value bool) int64 {
 
 	return r.doToInt("SETBIT", key, offset, v)
 }
+
+// GetRange executes the redis command GETRANGE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.4.0.
+func (r *Redis) GetRange(key string, start, end int) string {
+	return r.doToString("GETRANGE", key, start, end)
+}
