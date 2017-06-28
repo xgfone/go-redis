@@ -36,3 +36,12 @@ func (r *Redis) Ping(msg ...string) string {
 	}
 	return r.doToString("PING", msg)
 }
+
+// Quit executes the redis command QUIT.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Quit() {
+	r.do("QUIT")
+}
