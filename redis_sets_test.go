@@ -102,3 +102,21 @@ func ExampleRedis_SIsMember() {
 	// true
 	// false
 }
+
+func ExampleRedis_SMove() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	src := "test-smove-src"
+	dst := "test-smove-dest"
+	r.SAdd(src, "a", "b", "c")
+	r.SAdd(dst, "d")
+	fmt.Println(r.SMove(src, dst, "c"))
+	fmt.Println(r.SMembers(src))
+	fmt.Println(r.SMembers(dst))
+
+	// Output:
+	// true
+	// [b a]
+	// [d c]
+}
