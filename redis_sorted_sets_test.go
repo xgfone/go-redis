@@ -294,3 +294,17 @@ func ExampleRedis_ZRevRank() {
 	// 2
 	// -1
 }
+
+func ExampleRedis_ZScore() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zscore"
+	r.Del(key)
+
+	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
+	fmt.Println(r.ZScore(key, "one"))
+
+	// Output:
+	// 1
+}

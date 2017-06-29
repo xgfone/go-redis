@@ -261,3 +261,12 @@ func (r *Redis) ZRevRank(key, member string) int64 {
 		return _r.(int64)
 	}
 }
+
+// ZScore executes the redis command ZSCORE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.2.0.
+func (r *Redis) ZScore(key, member string) float64 {
+	return r.doToFloat("ZSCORE", key, member)
+}
