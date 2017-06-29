@@ -263,7 +263,7 @@ func ExampleRedis_ZRevRangeByScore() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	key := "test-zrangebyscore"
+	key := "test-zrevrangebyscore"
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
@@ -277,4 +277,20 @@ func ExampleRedis_ZRevRangeByScore() {
 	// [two one]
 	// [two]
 	// []
+}
+
+func ExampleRedis_ZRevRank() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zrevrank"
+	r.Del(key)
+
+	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
+	fmt.Println(r.ZRevRank(key, "one"))
+	fmt.Println(r.ZRevRank(key, "four"))
+
+	// Output:
+	// 2
+	// -1
 }
