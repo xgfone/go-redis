@@ -138,3 +138,21 @@ func (r *Redis) ZRangeByScore(key string, min, max interface{}, others ...interf
 	}
 	return r.doToStringSlice("ZRANGEBYSCORE", args...)
 }
+
+// ZRank executes the redis command ZRANK.
+//
+// Return -1 if member does not exist in the sorted set or key does not exist.
+// Return the rank which is 0-based of member if member exists in the sorted set.
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) ZRank(key, member string) int64 {
+	if _r, err := r.Do("ZRANK", key, member); err != nil {
+		panic(err)
+	} else {
+		if _r == nil {
+			return -1
+		}
+		return _r.(int64)
+	}
+}

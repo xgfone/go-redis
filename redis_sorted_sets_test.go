@@ -138,3 +138,19 @@ func ExampleRedis_ZRangeByScore() {
 	// [two]
 	// []
 }
+
+func ExampleRedis_ZRank() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zrank"
+	r.Del(key)
+
+	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
+	fmt.Println(r.ZRank(key, "three"))
+	fmt.Println(r.ZRank(key, "four"))
+
+	// Output:
+	// 2
+	// -1
+}
