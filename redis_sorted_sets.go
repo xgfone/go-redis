@@ -44,14 +44,21 @@ func (r *Redis) ZAdd(key string, values ...interface{}) interface{} {
 
 // ZRange executes the redis command ZRANGE.
 //
-// Return a float64 if giving the option INCR, or a int64.
 // Panic if an error occurs.
 //
 // New in redis version 1.2.0.
-// Adding from 3.0.2: XX, NX, CH, INCR.
 func (r *Redis) ZRange(key string, start, stop int, WITHSCORES ...bool) []string {
 	if len(WITHSCORES) > 0 && WITHSCORES[0] {
 		return r.doToStringSlice("ZRANGE", key, start, stop, "WITHSCORES")
 	}
 	return r.doToStringSlice("ZRANGE", key, start, stop)
+}
+
+// ZCard executes the redis command ZCARD.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.2.0.
+func (r *Redis) ZCard(key string) int64 {
+	return r.doToInt("ZCARD", key)
 }
