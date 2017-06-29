@@ -181,3 +181,12 @@ func (r *Redis) ZRem(key, member string, members ...string) int64 {
 func (r *Redis) ZRemRangeByLex(key string, min, max interface{}) int64 {
 	return r.doToInt("ZREMRANGEBYLEX", key, min, max)
 }
+
+// ZRemRangeByRank executes the redis command ZREMRANGEBYRank.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) ZRemRangeByRank(key string, start, stop int) int64 {
+	return r.doToInt("ZREMRANGEBYRank", key, start, stop)
+}

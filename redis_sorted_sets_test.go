@@ -190,3 +190,19 @@ func ExampleRedis_ZRemRangeByLex() {
 	// 3
 	// [a e f g]
 }
+
+func ExampleRedis_ZRemRangeByRank() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zremrangebylex"
+	r.Del(key)
+
+	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
+	fmt.Println(r.ZRemRangeByRank(key, 0, 1))
+	fmt.Println(r.ZRange(key, 0, -1, true))
+
+	// Output:
+	// 2
+	// [three 3]
+}
