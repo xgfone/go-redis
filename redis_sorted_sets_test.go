@@ -68,6 +68,7 @@ func ExampleRedis_ZInterStore() {
 	key := "test-zinterstore"
 	key1 := "test-zinterstore1"
 	key2 := "test-zinterstore2"
+	r.Del(key)
 	r.Del(key1)
 	r.Del(key2)
 
@@ -80,4 +81,22 @@ func ExampleRedis_ZInterStore() {
 	// Output:
 	// 2
 	// [one 5 two 10]
+}
+
+func ExampleRedis_ZLexCount() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zlexcount"
+	r.Del(key)
+
+	r.ZAdd(key, 0, "a", 0, "b", 0, "c", 0, "d", 0, "e")
+	r.ZAdd(key, 0, "f", 0, "g")
+
+	fmt.Println(r.ZLexCount(key, "-", "+"))
+	fmt.Println(r.ZLexCount(key, "[b", "[f"))
+
+	// Output:
+	// 7
+	// 5
 }

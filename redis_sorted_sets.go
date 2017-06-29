@@ -97,3 +97,12 @@ func (r *Redis) ZInterStore(dstKey string, num int, key string, others ...interf
 
 	return r.doToInt("ZINTERSTORE", args...)
 }
+
+// ZLexCount executes the redis command ZLEXCOUNT.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.8.9.
+func (r *Redis) ZLexCount(key string, min, max interface{}) int64 {
+	return r.doToInt("ZLEXCOUNT", key, min, max)
+}
