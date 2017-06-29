@@ -9,6 +9,8 @@ func ExampleRedis_LPop() {
 	defer r.Close()
 
 	key := "test-lpop"
+	r.Del(key)
+
 	r.RPush(key, "a", "b", "c")
 	fmt.Println(r.LPop(key))
 
@@ -21,6 +23,8 @@ func ExampleRedis_RPop() {
 	defer r.Close()
 
 	key := "test-rpop"
+	r.Del(key)
+
 	r.RPush(key, "a", "b", "c")
 	fmt.Println(r.RPop(key))
 
@@ -33,6 +37,8 @@ func ExampleRedis_LIndex() {
 	defer r.Close()
 
 	key := "test-lindex"
+	r.Del(key)
+
 	r.RPush(key, "a", "b", "c")
 	fmt.Println(r.LIndex(key, 1))
 	fmt.Println(r.LIndex(key, -1))
@@ -49,6 +55,8 @@ func ExampleRedis_LInsert() {
 	defer r.Close()
 
 	key := "test-linsert"
+	r.Del(key)
+
 	r.RPush(key, "Hello", "World")
 	fmt.Println(r.LInsert(key, "before", "World", "There"))
 
@@ -61,6 +69,8 @@ func ExampleRedis_LLen() {
 	defer r.Close()
 
 	key := "test-llen"
+	r.Del(key)
+
 	r.LPush(key, "Hello", "World")
 	fmt.Println(r.LLen(key))
 
@@ -73,6 +83,8 @@ func ExampleRedis_LPushX() {
 	defer r.Close()
 
 	key := "test-lpushx"
+	r.Del(key)
+
 	r.LPush(key, "World")
 	fmt.Println(r.LPushX(key, "Hello"))
 	fmt.Println(r.LPushX("nonexisting", "Hello"))
@@ -87,6 +99,8 @@ func ExampleRedis_RPushX() {
 	defer r.Close()
 
 	key := "test-rpushx"
+	r.Del(key)
+
 	r.RPush(key, "Hello")
 	fmt.Println(r.RPushX(key, "World"))
 	fmt.Println(r.RPushX("nonexisting", "World"))
@@ -102,6 +116,9 @@ func ExampleRedis_RPopLPush() {
 
 	key := "test-rpoplpush"
 	key2 := "test-rpoplpush2"
+	r.Del(key)
+	r.Del(key2)
+
 	r.RPush(key, "one", "two", "three")
 	fmt.Println(r.RPopLPush(key, key2))
 	fmt.Println(r.LRange(key, 0, -1))
@@ -118,6 +135,8 @@ func ExampleRedis_LRange() {
 	defer r.Close()
 
 	key := "test-lrange"
+	r.Del(key)
+
 	r.RPush(key, "one", "two", "three")
 	fmt.Println(r.LRange(key, 0, 0))
 	fmt.Println(r.LRange(key, -3, 2))
@@ -136,6 +155,8 @@ func ExampleRedis_LRem() {
 	defer r.Close()
 
 	key := "test-lrem"
+	r.Del(key)
+
 	r.RPush(key, "hello", "hello", "foo", "hello")
 	fmt.Println(r.LRem(key, -2, "hello"))
 	fmt.Println(r.LRange(key, 0, -1))
@@ -150,6 +171,8 @@ func ExampleRedis_LSet() {
 	defer r.Close()
 
 	key := "test-lset"
+	r.Del(key)
+
 	r.RPush(key, "one", "two", "three")
 	r.LSet(key, 0, "four")
 	r.LSet(key, -2, "five")
@@ -164,6 +187,8 @@ func ExampleRedis_LTrim() {
 	defer r.Close()
 
 	key := "test-ltrim"
+	r.Del(key)
+
 	r.RPush(key, "one", "two", "three")
 	r.LTrim(key, 1, -1)
 	fmt.Println(r.LRange(key, 0, -1))
@@ -177,6 +202,8 @@ func ExampleRedis_BLPop() {
 	defer r.Close()
 
 	key := "test-blpop"
+	r.Del(key)
+
 	r.RPush(key, "one", "two", "three")
 	fmt.Println(r.BLPop(key, 0))
 
@@ -189,6 +216,8 @@ func ExampleRedis_BRPop() {
 	defer r.Close()
 
 	key := "test-brpop"
+	r.Del(key)
+
 	r.RPush(key, "one", "two", "three")
 	fmt.Println(r.BRPop(key, 0))
 
@@ -202,6 +231,9 @@ func ExampleRedis_BRPopLPush() {
 
 	key := "test-brpoplpush"
 	key2 := "test-brpoplpush2"
+	r.Del(key)
+	r.Del(key2)
+
 	r.RPush(key, "one", "two", "three")
 	fmt.Println(r.BRPopLPush(key, key2, 0))
 	fmt.Println(r.LRange(key, 0, -1))

@@ -9,6 +9,8 @@ func ExampleRedis_Keys() {
 	defer r.Close()
 
 	key := "test-keys"
+	r.Del(key)
+
 	r.Set(key, key)
 	keys := r.Keys(key + "*")
 	fmt.Printf("len=%d, key=%s\n", len(keys), keys[0])
@@ -25,6 +27,9 @@ func ExampleRedis_Del() {
 
 	key1 := "test-del1"
 	key2 := "test-del2"
+	r.Del(key1)
+	r.Del(key2)
+
 	r.Set(key1, key1)
 	r.Set(key2, key2)
 	fmt.Println(r.Del(key1, key2))
@@ -39,6 +44,9 @@ func ExampleRedis_Exists() {
 
 	key1 := "test-exists"
 	key2 := "test-nonexisting"
+	r.Del(key1)
+	r.Del(key2)
+
 	r.Set(key1, key1)
 	fmt.Println(r.Exists(key1, key2))
 
@@ -51,6 +59,8 @@ func ExampleRedis_Expire() {
 	defer r.Close()
 
 	key := "test-expire"
+	r.Del(key)
+
 	r.Set(key, key)
 	fmt.Println(r.Expire(key, 1))
 	fmt.Println(r.Expire("nonexisting", 1))
@@ -65,6 +75,8 @@ func ExampleRedis_PExpire() {
 	defer r.Close()
 
 	key := "test-pexpire"
+	r.Del(key)
+
 	r.Set(key, key)
 	fmt.Println(r.PExpire(key, 1))
 	fmt.Println(r.PExpire("nonexisting", 1))
@@ -79,6 +91,8 @@ func ExampleRedis_ExpireAt() {
 	defer r.Close()
 
 	key := "test-expireat"
+	r.Del(key)
+
 	r.Set(key, key)
 	fmt.Println(r.ExpireAt(key, 1293840000))
 	fmt.Println(r.ExpireAt("nonexisting", 1))
@@ -93,6 +107,8 @@ func ExampleRedis_PExpireAt() {
 	defer r.Close()
 
 	key := "test-pexpireat"
+	r.Del(key)
+
 	r.Set(key, key)
 	fmt.Println(r.PExpireAt(key, 1293840000))
 	fmt.Println(r.PExpireAt("nonexisting", 1))
@@ -107,6 +123,8 @@ func ExampleRedis_Persist() {
 	defer r.Close()
 
 	key := "test-persist"
+	r.Del(key)
+
 	r.SetEX(key, 5, key)
 	fmt.Println(r.Persist(key))
 	fmt.Println(r.Persist("nonexisting"))
@@ -121,6 +139,8 @@ func ExampleRedis_TTL() {
 	defer r.Close()
 
 	key := "test-ttl"
+	r.Del(key)
+
 	r.SetEX(key, 5, key)
 	fmt.Println(r.TTL(key))
 
@@ -133,6 +153,8 @@ func ExampleRedis_PTTL() {
 	defer r.Close()
 
 	key := "test-pttl"
+	r.Del(key)
+
 	r.SetEX(key, 1, key)
 	fmt.Println(r.PTTL(key))
 
@@ -146,6 +168,9 @@ func ExampleRedis_Rename() {
 
 	key := "test-rename"
 	newKey := key + "-new"
+	r.Del(key)
+	r.Del(newKey)
+
 	r.Set(key, key)
 	r.Rename(key, newKey)
 	fmt.Println(r.Get(newKey))
@@ -160,6 +185,9 @@ func ExampleRedis_RenameNX() {
 
 	key := "test-renamenx"
 	newKey := key + "-new"
+	r.Del(key)
+	r.Del(newKey)
+
 	r.Set(key, key)
 	r.Set(newKey, newKey)
 	fmt.Println(r.RenameNX(key, newKey))
@@ -175,6 +203,8 @@ func ExampleRedis_Type() {
 	defer r.Close()
 
 	key := "test-type"
+	r.Del(key)
+
 	r.Set(key, key)
 	fmt.Println(r.Type(key))
 

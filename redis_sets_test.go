@@ -9,6 +9,8 @@ func ExampleRedis_SAdd() {
 	defer r.Close()
 
 	key := "test-sadd"
+	r.Del(key)
+
 	r.SAdd(key, "1", "2", "3")
 	fmt.Println(r.SMembers(key))
 
@@ -21,6 +23,8 @@ func ExampleRedis_SCard() {
 	defer r.Close()
 
 	key := "test-scard"
+	r.Del(key)
+
 	r.SAdd(key, "1", "2", "3")
 	fmt.Println(r.SCard(key))
 
@@ -34,6 +38,9 @@ func ExampleRedis_SDiff() {
 
 	key1 := "test-sdiff1"
 	key2 := "test-sdiff2"
+	r.Del(key1)
+	r.Del(key2)
+
 	r.SAdd(key1, "a", "b", "c")
 	r.SAdd(key2, "c", "d", "e")
 	fmt.Println(r.SDiff(key1, key2))
@@ -49,6 +56,10 @@ func ExampleRedis_SDiffStore() {
 	key1 := "test-sdiffstore1"
 	key2 := "test-sdiffstore2"
 	dest := "test-sdiffstore-dest"
+	r.Del(key1)
+	r.Del(key2)
+	r.Del(dest)
+
 	r.SAdd(key1, "a", "b", "c")
 	r.SAdd(key2, "c", "d", "e")
 	fmt.Println(r.SDiffStore(dest, key1, key2))
@@ -64,6 +75,9 @@ func ExampleRedis_SInter() {
 
 	key1 := "test-sinter1"
 	key2 := "test-sinter2"
+	r.Del(key1)
+	r.Del(key2)
+
 	r.SAdd(key1, "a", "b", "c")
 	r.SAdd(key2, "c", "d", "e")
 	fmt.Println(r.SInter(key1, key2))
@@ -79,6 +93,10 @@ func ExampleRedis_SInterStore() {
 	key1 := "test-sinterstore1"
 	key2 := "test-sinterstore2"
 	dest := "test-sinterstore-dest"
+	r.Del(key1)
+	r.Del(key2)
+	r.Del(dest)
+
 	r.SAdd(key1, "a", "b", "c")
 	r.SAdd(key2, "c", "d", "e")
 	fmt.Println(r.SInterStore(dest, key1, key2))
@@ -94,6 +112,8 @@ func ExampleRedis_SIsMember() {
 	defer r.Close()
 
 	key := "test-sismember"
+	r.Del(key)
+
 	r.SAdd(key, "a", "b", "c")
 	fmt.Println(r.SIsMember(key, "a"))
 	fmt.Println(r.SIsMember(key, "z"))
@@ -109,6 +129,9 @@ func ExampleRedis_SMove() {
 
 	src := "test-smove-src"
 	dst := "test-smove-dest"
+	r.Del(src)
+	r.Del(dst)
+
 	r.SAdd(src, "a", "b", "c")
 	r.SAdd(dst, "d")
 	fmt.Println(r.SMove(src, dst, "c"))
@@ -126,6 +149,8 @@ func ExampleRedis_SPop() {
 	defer r.Close()
 
 	key := "test-spop"
+	r.Del(key)
+
 	r.SAdd(key, "a", "b", "c")
 	fmt.Println(len(r.SPop(key)))
 	fmt.Println(len(r.SPop(key, 3)))
@@ -140,6 +165,8 @@ func ExampleRedis_SRandMember() {
 	defer r.Close()
 
 	key := "test-srandmember"
+	r.Del(key)
+
 	r.SAdd(key, "a", "b", "c")
 	fmt.Println(len(r.SRandMember(key)))
 	fmt.Println(len(r.SRandMember(key, 2)))
@@ -156,6 +183,8 @@ func ExampleRedis_SRem() {
 	defer r.Close()
 
 	key := "test-srem"
+	r.Del(key)
+
 	r.SAdd(key, "a", "b", "c", "d")
 	fmt.Println(r.SRem(key, "a", "b"))
 	fmt.Println(r.SRem(key, "z"))
@@ -173,6 +202,9 @@ func ExampleRedis_SUnion() {
 
 	key1 := "test-sunion1"
 	key2 := "test-sunion2"
+	r.Del(key1)
+	r.Del(key2)
+
 	r.SAdd(key1, "a", "b", "c")
 	r.SAdd(key2, "c", "d", "e")
 	fmt.Println(r.SUnion(key1, key2))
@@ -188,6 +220,10 @@ func ExampleRedis_SUnionStore() {
 	key1 := "test-sunionstore1"
 	key2 := "test-sunionstore2"
 	dest := "test-sunionstore-dest"
+	r.Del(key1)
+	r.Del(key2)
+	r.Del(dest)
+
 	r.SAdd(key1, "a", "b", "c")
 	r.SAdd(key2, "c", "d", "e")
 	fmt.Println(r.SUnionStore(dest, key1, key2))

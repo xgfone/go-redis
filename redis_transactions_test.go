@@ -9,6 +9,7 @@ func ExampleRedis_Exec() {
 	defer r.Close()
 
 	key := "test-exec"
+	r.Del(key)
 	r.Multi()
 	r.Set(key, "123")
 	r.Get(key)
