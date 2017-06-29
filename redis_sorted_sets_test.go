@@ -100,3 +100,21 @@ func ExampleRedis_ZLexCount() {
 	// 7
 	// 5
 }
+
+func ExampleRedis_ZRangeByLex() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zrangebylex"
+	r.Del(key)
+
+	r.ZAdd(key, 0, "a", 0, "b", 0, "c", 0, "d", 0, "e")
+	r.ZAdd(key, 0, "f", 0, "g")
+
+	fmt.Println(r.ZRangeByLex(key, "-", "(c"))
+	fmt.Println(r.ZRangeByLex(key, "[aaa", "(g"))
+
+	// Output:
+	// [a b]
+	// [b c d e f]
+}

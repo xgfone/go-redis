@@ -106,3 +106,19 @@ func (r *Redis) ZInterStore(dstKey string, num int, key string, others ...interf
 func (r *Redis) ZLexCount(key string, min, max interface{}) int64 {
 	return r.doToInt("ZLEXCOUNT", key, min, max)
 }
+
+// ZRangeByLex executes the redis command ZRANGEBYLEX.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.8.9.
+func (r *Redis) ZRangeByLex(key string, min, max interface{}, limit ...interface{}) []string {
+	args := make([]interface{}, len(limit)+3)
+	args[0] = key
+	args[1] = min
+	args[2] = max
+	for i, v := range limit {
+		args[i+3] = v
+	}
+	return r.doToStringSlice("ZRANGEBYLEX", args...)
+}
