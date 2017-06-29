@@ -308,3 +308,25 @@ func ExampleRedis_ZScore() {
 	// Output:
 	// 1
 }
+
+func ExampleRedis_ZUnionStore() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zunionstore"
+	key1 := "test-zunionstore1"
+	key2 := "test-zunionstore2"
+	r.Del(key)
+	r.Del(key1)
+	r.Del(key2)
+
+	r.ZAdd(key1, 1, "one", 2, "two")
+	r.ZAdd(key2, 1, "one", 2, "two", 3, "three")
+
+	fmt.Println(r.ZUnionStore(key, 2, key1, key2, "WEIGHTS", 2, 3))
+	fmt.Println(r.ZRange(key, 0, -1, true))
+
+	// Output:
+	// 3
+	// [one 5 three 9 two 10]
+}

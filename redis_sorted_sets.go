@@ -270,3 +270,20 @@ func (r *Redis) ZRevRank(key, member string) int64 {
 func (r *Redis) ZScore(key, member string) float64 {
 	return r.doToFloat("ZSCORE", key, member)
 }
+
+// ZUnionStore executes the redis command ZUNIONSTORE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) ZUnionStore(dstKey string, num int, key string, others ...interface{}) int64 {
+	args := make([]interface{}, len(others)+3)
+	args[0] = dstKey
+	args[1] = num
+	args[2] = key
+	for i, v := range others {
+		args[i+3] = v
+	}
+
+	return r.doToInt("ZUNIONSTORE", args...)
+}
