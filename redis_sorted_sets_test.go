@@ -60,3 +60,24 @@ func ExampleRedis_ZIncrBy() {
 	// 4
 	// [two 2 three 3 one 4]
 }
+
+func ExampleRedis_ZInterStore() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zinterstore"
+	key1 := "test-zinterstore1"
+	key2 := "test-zinterstore2"
+	r.Del(key1)
+	r.Del(key2)
+
+	r.ZAdd(key1, 1, "one", 2, "two")
+	r.ZAdd(key2, 1, "one", 2, "two", 3, "three")
+
+	fmt.Println(r.ZInterStore(key, 2, key1, key2, "WEIGHTS", 2, 3))
+	fmt.Println(r.ZRange(key, 0, -1, true))
+
+	// Output:
+	// 2
+	// [one 5 two 10]
+}

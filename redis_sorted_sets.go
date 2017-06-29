@@ -80,3 +80,20 @@ func (r *Redis) ZCount(key string, min, max interface{}) int64 {
 func (r *Redis) ZIncrBy(key string, incr float64, member string) float64 {
 	return r.doToFloat("ZINCRBY", key, incr, member)
 }
+
+// ZInterStore executes the redis command ZINTERSTORE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) ZInterStore(dstKey string, num int, key string, others ...interface{}) int64 {
+	args := make([]interface{}, len(others)+3)
+	args[0] = dstKey
+	args[1] = num
+	args[2] = key
+	for i, v := range others {
+		args[i+3] = v
+	}
+
+	return r.doToInt("ZINTERSTORE", args...)
+}
