@@ -199,3 +199,15 @@ func (r *Redis) ZRemRangeByRank(key string, start, stop int) int64 {
 func (r *Redis) ZRemRangeByScore(key string, min, max interface{}) int64 {
 	return r.doToInt("ZREMRANGEBYSCORE", key, min, max)
 }
+
+// ZRevRange executes the redis command ZREVRANGE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.2.0.
+func (r *Redis) ZRevRange(key string, start, stop int, WITHSCORES ...bool) []string {
+	if len(WITHSCORES) > 0 && WITHSCORES[0] {
+		return r.doToStringSlice("ZREVRANGE", key, start, stop, "WITHSCORES")
+	}
+	return r.doToStringSlice("ZREVRANGE", key, start, stop)
+}
