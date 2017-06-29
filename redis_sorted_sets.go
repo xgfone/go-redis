@@ -71,3 +71,12 @@ func (r *Redis) ZCard(key string) int64 {
 func (r *Redis) ZCount(key string, min, max interface{}) int64 {
 	return r.doToInt("ZCOUNT", key, min, max)
 }
+
+// ZIncrBy executes the redis command ZINCRBY.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.2.0.
+func (r *Redis) ZIncrBy(key string, incr float64, member string) float64 {
+	return r.doToFloat("ZINCRBY", key, incr, member)
+}

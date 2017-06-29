@@ -45,3 +45,18 @@ func ExampleRedis_ZCount() {
 	// 3
 	// 2
 }
+
+func ExampleRedis_ZIncrBy() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zincrby"
+	r.Del(key)
+	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
+	fmt.Println(r.ZIncrBy(key, 3, "one"))
+	fmt.Println(r.ZRange(key, 0, -1, true))
+
+	// Output:
+	// 4
+	// [two 2 three 3 one 4]
+}
