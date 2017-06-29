@@ -227,3 +227,19 @@ func (r *Redis) ZRevRangeByLex(key string, min, max interface{}, limit ...interf
 	}
 	return r.doToStringSlice("ZREVRANGEBYLEX", args...)
 }
+
+// ZRevRangeByScore executes the redis command ZREVRANGEBYSCORE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.5.
+func (r *Redis) ZRevRangeByScore(key string, min, max interface{}, others ...interface{}) []string {
+	args := make([]interface{}, len(others)+3)
+	args[0] = key
+	args[1] = min
+	args[2] = max
+	for i, v := range others {
+		args[i+3] = v
+	}
+	return r.doToStringSlice("ZREVRANGEBYSCORE", args...)
+}

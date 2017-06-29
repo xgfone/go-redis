@@ -258,3 +258,23 @@ func ExampleRedis_ZRevRangeByLex() {
 	// [b a]
 	// [f e d c b]
 }
+
+func ExampleRedis_ZRevRangeByScore() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zrangebyscore"
+	r.Del(key)
+
+	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
+	fmt.Println(r.ZRevRangeByScore(key, "+inf", "-inf"))
+	fmt.Println(r.ZRevRangeByScore(key, 2, 1))
+	fmt.Println(r.ZRevRangeByScore(key, 2, "(1"))
+	fmt.Println(r.ZRevRangeByScore(key, "(2", "(1"))
+
+	// Output:
+	// [three two one]
+	// [two one]
+	// [two]
+	// []
+}
