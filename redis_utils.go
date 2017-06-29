@@ -63,7 +63,7 @@ func (r *Redis) doToFloat(cmd string, args ...interface{}) float64 {
 		case string:
 			v = _r.(string)
 		default:
-			return 0.0
+			return -1
 		}
 		_v, err := strconv.ParseFloat(v, 64)
 		if err != nil {
@@ -71,7 +71,7 @@ func (r *Redis) doToFloat(cmd string, args ...interface{}) float64 {
 		}
 		return _v
 	}
-	return 0.0
+	return -1
 }
 
 func (r *Redis) doToStringSlice(cmd string, args ...interface{}) []string {
