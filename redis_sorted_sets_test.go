@@ -30,3 +30,18 @@ func ExampleRedis_ZCard() {
 	// Output:
 	// 3
 }
+
+func ExampleRedis_ZCount() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zcount"
+	r.Del(key)
+	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
+	fmt.Println(r.ZCount(key, "-inf", "+inf"))
+	fmt.Println(r.ZCount(key, "(1", 3))
+
+	// Output:
+	// 3
+	// 2
+}

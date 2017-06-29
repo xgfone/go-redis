@@ -62,3 +62,12 @@ func (r *Redis) ZRange(key string, start, stop int, WITHSCORES ...bool) []string
 func (r *Redis) ZCard(key string) int64 {
 	return r.doToInt("ZCARD", key)
 }
+
+// ZCount executes the redis command ZCOUNT.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.0.0.
+func (r *Redis) ZCount(key string, min, max interface{}) int64 {
+	return r.doToInt("ZCOUNT", key, min, max)
+}
