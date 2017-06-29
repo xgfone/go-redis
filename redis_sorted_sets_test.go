@@ -170,3 +170,23 @@ func ExampleRedis_ZRem() {
 	// 2
 	// [three 3]
 }
+
+func ExampleRedis_ZRemRangeByLex() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zremrangebylex"
+	r.Del(key)
+
+	r.ZAdd(key, 0, "a", 0, "b", 0, "c", 0, "d", 0, "e")
+	r.ZAdd(key, 0, "f", 0, "g")
+
+	fmt.Println(r.ZRange(key, 0, -1))
+	fmt.Println(r.ZRemRangeByLex(key, "[b", "[d"))
+	fmt.Println(r.ZRange(key, 0, -1))
+
+	// Output:
+	// [a b c d e f g]
+	// 3
+	// [a e f g]
+}

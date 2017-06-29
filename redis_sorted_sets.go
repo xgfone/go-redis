@@ -172,3 +172,12 @@ func (r *Redis) ZRem(key, member string, members ...string) int64 {
 
 	return r.doToInt("ZREM", args...)
 }
+
+// ZRemRangeByLex executes the redis command ZREMRANGEBYLEX.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.8.9.
+func (r *Redis) ZRemRangeByLex(key string, min, max interface{}) int64 {
+	return r.doToInt("ZREMRANGEBYLEX", key, min, max)
+}
