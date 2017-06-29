@@ -195,7 +195,7 @@ func ExampleRedis_ZRemRangeByRank() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	key := "test-zremrangebylex"
+	key := "test-zremrangebyrank"
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
@@ -211,7 +211,7 @@ func ExampleRedis_ZRemRangeByScore() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	key := "test-zremrangebylex"
+	key := "test-zremrangebyscore"
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
@@ -227,7 +227,7 @@ func ExampleRedis_ZRevRange() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	key := "test-zremrangebylex"
+	key := "test-zrevrange"
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
@@ -237,4 +237,24 @@ func ExampleRedis_ZRevRange() {
 	// Output:
 	// [three 3 two 2 one 1]
 	// [one]
+}
+
+func ExampleRedis_ZRevRangeByLex() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	key := "test-zrevrangebylex"
+	r.Del(key)
+
+	r.ZAdd(key, 0, "a", 0, "b", 0, "c", 0, "d", 0, "e")
+	r.ZAdd(key, 0, "f", 0, "g")
+
+	fmt.Println(r.ZRevRangeByLex(key, "[c", "-"))
+	fmt.Println(r.ZRevRangeByLex(key, "(c", "-"))
+	fmt.Println(r.ZRevRangeByLex(key, "(g", "[aaa"))
+
+	// Output:
+	// [c b a]
+	// [b a]
+	// [f e d c b]
 }
