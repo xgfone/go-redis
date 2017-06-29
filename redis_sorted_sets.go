@@ -156,3 +156,19 @@ func (r *Redis) ZRank(key, member string) int64 {
 		return _r.(int64)
 	}
 }
+
+// ZRem executes the redis command ZREM.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.2.0.
+func (r *Redis) ZRem(key, member string, members ...string) int64 {
+	args := make([]interface{}, len(members)+2)
+	args[0] = key
+	args[1] = member
+	for i, v := range members {
+		args[i+2] = v
+	}
+
+	return r.doToInt("ZREM", args...)
+}
