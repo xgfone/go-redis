@@ -44,7 +44,8 @@ func (r *Redis) GeoDist(key, member1, member2 string, unit ...string) float64 {
 
 // GeoRadius executes the redis command GEORADIUS.
 //
-// The returned value may be []string or [][]string. Panic if an error occurs.
+// The type of the returned value []string, or [][]string If WITHCOORD, WITHDIST
+// or WITHHASH options are specified. Panic if an error occurs.
 //
 // New in redis version 3.2.0.
 func (r *Redis) GeoRadius(key string, longitude, latitude, radius interface{},
@@ -140,7 +141,8 @@ func (r *Redis) GeoPos(key, member string, members ...string) [][]string {
 
 // GeoRadiusByMember executes the redis command GEORADIUSBYMEMBER.
 //
-// The returned value may be []string or [][]string. Panic if an error occurs.
+// The type of the returned value []string, or [][]string If WITHCOORD, WITHDIST
+// or WITHHASH options are specified. Panic if an error occurs.
 //
 // New in redis version 3.2.0.
 func (r *Redis) GeoRadiusByMember(key, member string, radius interface{},
