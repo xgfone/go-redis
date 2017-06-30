@@ -1,6 +1,7 @@
 package redis
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -265,4 +266,21 @@ func (r *Redis) SlaveOf(host string, port interface{}) {
 		panic(ErrInvalidArgs)
 	}
 	r.do("SLAVEOF", host, port)
+}
+
+// Time executes the redis command TIME.
+//
+// Panic if an error occurs.
+//
+// New in redis version 2.6.0.
+func (r *Redis) Time() (seconds, microseconds int64) {
+	vs := r.doToStringSlice("TIME")
+	var err error
+	if seconds, err = strconv.ParseInt(vs[0], 10, 64); err != nil {
+		panic(err)
+	}
+	if microseconds, err = strconv.ParseInt(vs[1], 10, 64); err != nil {
+		panic(err)
+	}
+	return
 }

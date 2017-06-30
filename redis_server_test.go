@@ -140,3 +140,14 @@ func ExampleRedis_SlaveOf() {
 	// no one
 	// Argument Error
 }
+
+func ExampleRedis_Time() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	s, m := r.Time()
+	fmt.Println(s != 0, m != 0)
+
+	// Output:
+	// true, true
+}
