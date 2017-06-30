@@ -1,11 +1,12 @@
 # go-redis
 Supply the high-level API interface based on https://github.com/garyburd/redigo
 
+
 ## Implemented Commands Table
 
 |                   |   Implemented Commands   |  Unimplemented Commands
 |-------------------|--------------------------|---------------------------
-| **Connection**    | AUTH, ECHO, PING, QUIT, SELECT, SWAPDB(from redis 4.0) |
+| **Connection**    | AUTH, ECHO, PING, QUIT, SELECT, SWAPDB(required redis 4.0) |
 | **Geo**           | GEOADD, GEODIST, GEOHASH, GEOPOS, GEORADIUS, GEORADIUSBYMEMBER |
 | **Hashes**        | HDEL, HEXISTS, HGET, HGETALL, HINCRBY, HINCRBYFLOAT, HKEYS, HLEN, HMGET, HMSET, HSET, HSETNX, HSTRLEN, HVALS | HSCAN
 | **HyperLogLog**   | PFADD, PFCOUNT, PFMERGE |
