@@ -209,3 +209,60 @@ func (r *Redis) Info(section ...string) map[string]string {
 func (r *Redis) LastSave() int64 {
 	return r.doToInt("LASTSAVE")
 }
+
+// Save executes the redis command SAVE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Save() {
+	r.do("SAVE")
+}
+
+// Shutdown executes the redis command SHUTDOWN.
+//
+// All the clients will be halted when executed this command,
+// and the connection will be closed. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) Shutdown(save ...string) {
+	if len(save) > 1 {
+		panic(ErrInvalidArgs)
+	} else if len(save) == 1 {
+		_save := strings.ToUpper(save[0])
+		switch _save {
+		case "NOSAVE", "SAVE":
+		default:
+			panic(ErrInvalidArgs)
+		}
+		r.do("SHUTDOWN", _save)
+		return
+	}
+	r.do("SHUTDOWN")
+}
+
+// SlaveOf executes the redis command SLAVEOF.
+//
+// If the parameters are either NO ONE or host port, which the port must be
+// the type of int and between 1 and b5535. Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) SlaveOf(host string, port interface{}) {
+	switch port.(type) {
+	case string:
+		host = strings.ToUpper(host)
+		_port := strings.ToUpper(port.(string))
+		if host != "NO" || _port != "ONE" {
+			panic(ErrInvalidArgs)
+		}
+		port = _port
+	case int:
+		_port := port.(int)
+		if _port < 1 || _port > 65535 {
+			panic(ErrInvalidArgs)
+		}
+	default:
+		panic(ErrInvalidArgs)
+	}
+	r.do("SLAVEOF", host, port)
+}

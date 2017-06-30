@@ -110,3 +110,33 @@ func ExampleRedis_LastSave() {
 	// Output:
 	// true
 }
+
+func ExampleRedis_Save() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	r.Save()
+	fmt.Println()
+
+	// Output:
+	//
+}
+
+func ExampleRedis_SlaveOf() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("Argument Error")
+		}
+	}()
+
+	r.SlaveOf("no", "one")
+	fmt.Println("no one")
+	r.SlaveOf("not no", "not one")
+
+	// Output:
+	// no one
+	// Argument Error
+}
