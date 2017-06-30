@@ -107,8 +107,14 @@ func (r *Redis) CommandCount() int64 {
 // Panic if an error occurs.
 //
 // New in redis version 2.8.13.
-func (r *Redis) CommandGetKeys() []string {
-	return r.doToStringSlice("COMMAND", "GETKEYS")
+func (r *Redis) CommandGetKeys(command string, commands ...interface{}) []string {
+	args := make([]interface{}, len(commands)+2)
+	args[0] = "GETKEYS"
+	args[1] = command
+	for i, v := range commands {
+		args[i+2] = v
+	}
+	return r.doToStringSlice("COMMAND", args...)
 }
 
 // ConfigGet executes the redis command CONFIG GET.

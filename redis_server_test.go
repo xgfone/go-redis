@@ -37,15 +37,20 @@ func ExampleRedis_CommandCount() {
 	// true
 }
 
-// func ExampleRedis_CommandGetKeys() {
-// 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
-// 	defer r.Close()
+func ExampleRedis_CommandGetKeys() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
 
-// 	fmt.Println(r.CommandGetKeys())
+	fmt.Println(r.CommandGetKeys("MSET", "a", "b", "c", "d", "e", "f"))
+	fmt.Println(r.CommandGetKeys("EVAL", "not consulted", 3, "key1", "key2",
+		"key3", "arg1", "arg2", "arg3", "argN"))
+	fmt.Println(r.CommandGetKeys("SORT", "mylist", "ALPHA", "STORE", "outlist"))
 
-// 	// Output:
-// 	// true
-// }
+	// Output:
+	// [a c e]
+	// [key1 key2 key3]
+	// [mylist outlist]
+}
 
 func ExampleRedis_ConfigGet() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
