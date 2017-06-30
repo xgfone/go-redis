@@ -34,7 +34,14 @@ type Redis struct {
 	rp  *pools.ResourcePool
 }
 
-// NewRedis return a new Redis.
+// NewRedis return a new Redis, which uses a connection pool in the underlying
+// implementation.
+//
+// connURL is a URL to connect to the redis server. It should follow the draft
+// IANA specification for the scheme (https://www.iana.org/assignments/uri-schemes/prov/redis).
+// For example, "redis://password@127.0.0.1:6379/0".
+//
+// poolSize is the size of the connection pool.
 func NewRedis(connURL string, poolSize int) *Redis {
 	r := &Redis{
 		connURL:  connURL,

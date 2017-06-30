@@ -1,9 +1,9 @@
 # go-redis
-Supply the high-level API interface based on https://github.com/garyburd/redigo
+Supply the high-level API interface based on https://github.com/garyburd/redigo. It uses a pool to handle the redis connection in the underlying implementation, but you don't have to care about it, and it should be transparent to the user.
 
 ## About the API
 
-For the meaning of APIs, please see the redis command [doc](https://redis.io/commands).
+For the meaning of APIs, please see the corresponding redis command [doc](https://redis.io/commands).
 
 #### Name
 
@@ -38,7 +38,7 @@ The correspondences is as follows.
 **Notice:**
 
 1. If the redis connection has an error, or the redis server returns an error, the API will panic with the error.
-2. For the specail commands of `INFO` and `CLIENT LIST`, the APIs, `Info` and `ClientList`, return the parsed Key-Values, that's, `map[string]string`.
+2. For the specail commands of `INFO` and `CLIENT LIST`, the corresponding APIs, `Info` and `ClientList`, will return the parsed Key-Values, that's, `map[string]string`.
 
 
 ## Implemented Commands Table
