@@ -68,10 +68,24 @@ func ExampleRedis_ConfigGet() {
 	defer r.Close()
 
 	r.ConfigSet("save", "900 1 300 10")
-	fmt.Println(r.ConfigGet("save"))
+	vs := r.ConfigGet("save")
+	if len(vs) == 2 { // For Windows Redis: ["save", "jd 900 jd 300"]
+		if vs[0] == "save" && vs[1] == "jd 900 jd 300" {
+			fmt.Println("OK")
+		} else {
+			fmt.Println("ERR")
+		}
+	} else { // For Linux Redis: ["save", "900", "1", "300", "10"]
+		if vs[0] == "save" && vs[1] == "900" && vs[2] == "1" &&
+			vs[3] == "300" && vs[4] == "10" {
+			fmt.Println("OK")
+		} else {
+			fmt.Println("ERR")
+		}
+	}
 
 	// Output:
-	// [save 900 1 300 10]
+	// OK
 }
 
 func ExampleRedis_ConfigResetStat() {

@@ -134,6 +134,11 @@ func (r *Redis) CommandGetKeys(command string, commands ...interface{}) []string
 
 // ConfigGet executes the redis command CONFIG GET.
 //
+// Notice the difference of the returned value between the Linux Redis server
+// and the Windows Redis server. For instance, r.ConfigGet("save") returns
+// ["save", "jd 900 jd 300"] for Windows, and ["save", "900", "1", "300", "10"]
+// for Linux.
+//
 // Panic if an error occurs.
 //
 // New in redis version 2.0.0.
