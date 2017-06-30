@@ -1,6 +1,8 @@
 # go-redis
 Supply the high-level API interface based on https://github.com/garyburd/redigo. It uses a pool to handle the redis connection in the underlying implementation, but you don't have to care about it, and it should be transparent to the user.
 
+This package has no third-party dependencies, but `https://github.com/garyburd/redigo` and `github.com/xgfone/go-tools/pools`.
+
 ## About the API
 
 For the meaning of APIs, please see the corresponding redis command [doc](https://redis.io/commands).
