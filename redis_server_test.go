@@ -149,5 +149,5 @@ func ExampleRedis_Time() {
 	fmt.Println(s != 0, m != 0)
 
 	// Output:
-	// true, true
+	// true true
 }
