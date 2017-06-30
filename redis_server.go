@@ -200,3 +200,12 @@ func (r *Redis) Info(section ...string) map[string]string {
 
 	return results
 }
+
+// LastSave executes the redis command LASTSAVE.
+//
+// Panic if an error occurs.
+//
+// New in redis version 1.0.0.
+func (r *Redis) LastSave() int64 {
+	return r.doToInt("LASTSAVE")
+}

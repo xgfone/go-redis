@@ -100,3 +100,13 @@ func ExampleRedis_Info() {
 	// Output:
 	// true
 }
+
+func ExampleRedis_LastSave() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	fmt.Println(r.LastSave() != 0)
+
+	// Output:
+	// true
+}
