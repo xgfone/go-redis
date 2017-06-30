@@ -93,6 +93,21 @@ func (r *Redis) ClientPause(timeout int) {
 	r.do("CLIENT", "PAUSE", timeout)
 }
 
+// ClientReply executes the redis command CLIENT REPLY.
+//
+// Panic if an error occurs.
+//
+// New in redis version 3.2.0.
+func (r *Redis) ClientReply(arg string) {
+	arg = strings.ToUpper(arg)
+	switch arg {
+	case "ON", "OFF", "SKIP":
+	default:
+		panic(ErrInvalidArgs)
+	}
+	r.do("CLIENT", "REPLY", arg)
+}
+
 // CommandCount executes the redis command COMMAND COUNT.
 //
 // Panic if an error occurs.

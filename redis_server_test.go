@@ -27,6 +27,17 @@ func ExampleRedis_ClientList() {
 	// true
 }
 
+func ExampleRedis_ClientReply() {
+	r := NewRedis("redis://127.0.0.1:6379/0", 1)
+	defer r.Close()
+
+	r.ClientReply("ON")
+	fmt.Println("OK")
+
+	// Output:
+	// OK
+}
+
 func ExampleRedis_CommandCount() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
