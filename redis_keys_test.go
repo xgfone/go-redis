@@ -156,10 +156,10 @@ func ExampleRedis_PTTL() {
 	r.Del(key)
 
 	r.SetEX(key, 1, key)
-	fmt.Println(r.PTTL(key))
+	fmt.Println(r.PTTL(key) > 990)
 
 	// Output:
-	// 1000
+	// true
 }
 
 func ExampleRedis_Rename() {
