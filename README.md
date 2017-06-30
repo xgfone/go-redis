@@ -1,6 +1,45 @@
 # go-redis
 Supply the high-level API interface based on https://github.com/garyburd/redigo
 
+## About the API
+
+For the meaning of APIs, please see the redis command [doc](https://redis.io/commands).
+
+#### Name
+
+The API name is the name of the redis command, but the API name is the format of `CamelCase`. For instance,
+
+|  Redis Command  |  API Name
+|-----------------|------------
+|  SET            | Set
+|  SETNX          | SetNX
+|  SETRANGE       | SetRange
+|  CONFIG GET     | ConfigGet
+
+#### Arguments
+
+The arguments of API is the same as the redis command. See the redis [doc](https://redis.io/commands).
+
+#### Return
+
+The correspondences is as follows.
+
+| Redis Return | API Return
+|---------------|--------------
+| String("OK")  | NO RETURN VALUE
+| Integer       | `int64`
+| Integer(0/1)  | `bool`
+| Float String  | `float64`
+| Bulk String   | `string`
+| Array         | `[]string`
+| Maybe Two Types | `interface{}`
+| Maybe Two Slice Types | `[]interface{}`
+
+**Notice:**
+
+1. If the redis connection has an error, or the redis server returns an error, the API will panic with the error.
+2. For the specail commands of `INFO` and `CLIENT LIST`, the APIs, `Info` and `ClientList`, return the parsed Key-Values, that's, `map[string]string`.
+
 
 ## Implemented Commands Table
 
