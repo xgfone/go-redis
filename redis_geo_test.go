@@ -9,23 +9,32 @@ func ExampleRedis_GeoRadius() {
 	key := "test-georadius"
 	r.Del(key)
 
-	fmt.Println(r.GeoAdd(key, "13.361389", "38.115556", "Palermo",
-		"15.087269", "37.502669", "Catania"))
-	fmt.Println(r.GeoDist(key, "Palermo", "Catania"))
-	fmt.Println(r.GeoDist(key, "Palermo", "Catania", "km"))
-	fmt.Println(r.GeoDist(key, "Palermo", "Catania", "mi"))
-	fmt.Println(r.GeoDist(key, "foo", "bar"))
+	v, _ := r.GeoAdd(key, "13.361389", "38.115556", "Palermo",
+		"15.087269", "37.502669", "Catania")
+	fmt.Println(v)
 
-	fmt.Println(r.GeoRadius(key, 15, 37, 100, "km"))
-	fmt.Println(r.GeoRadius(key, 15, 37, 200, "km"))
-	fmt.Println(r.GeoRadius(key, 15, 37, 200, "km", "WITHDIST"))
+	f, _ := r.GeoDist(key, "Palermo", "Catania")
+	fmt.Println(f)
+	f, _ = r.GeoDist(key, "Palermo", "Catania", "km")
+	fmt.Println(f)
+	f, _ = r.GeoDist(key, "Palermo", "Catania", "mi")
+	fmt.Println(f)
+	f, _ = r.GeoDist(key, "foo", "bar")
+	fmt.Println(f)
+
+	vv, _ := r.GeoRadius(key, 15, 37, 100, "km")
+	fmt.Println(vv)
+	vv, _ = r.GeoRadius(key, 15, 37, 200, "km")
+	fmt.Println(vv)
+	vv, _ = r.GeoRadius(key, 15, 37, 200, "km", "WITHDIST")
+	fmt.Println(vv)
 
 	// Output:
 	// 2
 	// 166274.1516
 	// 166.2742
 	// 103.3182
-	// -1
+	// 0
 	// [Catania]
 	// [Palermo Catania]
 	// [[Palermo 190.4424] [Catania 56.4413]]
@@ -38,9 +47,11 @@ func ExampleRedis_GeoHash() {
 	key := "test-geohash"
 	r.Del(key)
 
-	fmt.Println(r.GeoAdd(key, "13.361389", "38.115556", "Palermo",
-		"15.087269", "37.502669", "Catania"))
-	fmt.Println(r.GeoHash(key, "Palermo", "Catania"))
+	v, _ := r.GeoAdd(key, "13.361389", "38.115556", "Palermo",
+		"15.087269", "37.502669", "Catania")
+	fmt.Println(v)
+	ss, _ := r.GeoHash(key, "Palermo", "Catania")
+	fmt.Println(ss)
 
 	// Output:
 	// 2
@@ -54,9 +65,10 @@ func ExampleRedis_GeoPos() {
 	key := "test-geopos"
 	r.Del(key)
 
-	fmt.Println(r.GeoAdd(key, "13.361389", "38.115556", "Palermo",
-		"15.087269", "37.502669", "Catania"))
-	vs := r.GeoPos(key, "Palermo", "Catania", "NonExisting")
+	v, _ := r.GeoAdd(key, "13.361389", "38.115556", "Palermo",
+		"15.087269", "37.502669", "Catania")
+	fmt.Println(v)
+	vs, _ := r.GeoPos(key, "Palermo", "Catania", "NonExisting")
 	fmt.Println(vs[0][0][:17])
 	fmt.Println(vs[0][1][:17])
 	fmt.Println(vs[1][0][:17])
@@ -81,7 +93,8 @@ func ExampleRedis_GeoRadiusByMember() {
 	r.GeoAdd(key, "13.361389", "38.115556", "Palermo",
 		"15.087269", "37.502669", "Catania")
 
-	fmt.Println(r.GeoRadiusByMember(key, "Agrigento", 100, "km"))
+	v, _ := r.GeoRadiusByMember(key, "Agrigento", 100, "km")
+	fmt.Println(v)
 
 	// Output:
 	// [Agrigento Palermo]

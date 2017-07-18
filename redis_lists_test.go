@@ -12,7 +12,8 @@ func ExampleRedis_LPop() {
 	r.Del(key)
 
 	r.RPush(key, "a", "b", "c")
-	fmt.Println(r.LPop(key))
+	v, _ := r.LPop(key)
+	fmt.Println(v)
 
 	// Output:
 	// a
@@ -26,7 +27,8 @@ func ExampleRedis_RPop() {
 	r.Del(key)
 
 	r.RPush(key, "a", "b", "c")
-	fmt.Println(r.RPop(key))
+	v, _ := r.RPop(key)
+	fmt.Println(v)
 
 	// Output:
 	// c
@@ -40,9 +42,12 @@ func ExampleRedis_LIndex() {
 	r.Del(key)
 
 	r.RPush(key, "a", "b", "c")
-	fmt.Println(r.LIndex(key, 1))
-	fmt.Println(r.LIndex(key, -1))
-	fmt.Println(r.LIndex(key, 4))
+	v, _ := r.LIndex(key, 1)
+	fmt.Println(v)
+	v, _ = r.LIndex(key, -1)
+	fmt.Println(v)
+	v, _ = r.LIndex(key, 4)
+	fmt.Println(v)
 
 	// Output:
 	// b
@@ -58,7 +63,8 @@ func ExampleRedis_LInsert() {
 	r.Del(key)
 
 	r.RPush(key, "Hello", "World")
-	fmt.Println(r.LInsert(key, "before", "World", "There"))
+	v, _ := r.LInsert(key, "before", "World", "There")
+	fmt.Println(v)
 
 	// Output:
 	// 3
@@ -72,7 +78,8 @@ func ExampleRedis_LLen() {
 	r.Del(key)
 
 	r.LPush(key, "Hello", "World")
-	fmt.Println(r.LLen(key))
+	v, _ := r.LLen(key)
+	fmt.Println(v)
 
 	// Output:
 	// 2
@@ -86,8 +93,10 @@ func ExampleRedis_LPushX() {
 	r.Del(key)
 
 	r.LPush(key, "World")
-	fmt.Println(r.LPushX(key, "Hello"))
-	fmt.Println(r.LPushX("nonexisting", "Hello"))
+	v, _ := r.LPushX(key, "Hello")
+	fmt.Println(v)
+	v, _ = r.LPushX("nonexisting", "Hello")
+	fmt.Println(v)
 
 	// Output:
 	// 2
@@ -102,8 +111,10 @@ func ExampleRedis_RPushX() {
 	r.Del(key)
 
 	r.RPush(key, "Hello")
-	fmt.Println(r.RPushX(key, "World"))
-	fmt.Println(r.RPushX("nonexisting", "World"))
+	v, _ := r.RPushX(key, "World")
+	fmt.Println(v)
+	v, _ = r.RPushX("nonexisting", "World")
+	fmt.Println(v)
 
 	// Output:
 	// 2
@@ -120,9 +131,12 @@ func ExampleRedis_RPopLPush() {
 	r.Del(key2)
 
 	r.RPush(key, "one", "two", "three")
-	fmt.Println(r.RPopLPush(key, key2))
-	fmt.Println(r.LRange(key, 0, -1))
-	fmt.Println(r.LRange(key2, 0, -1))
+	v, _ := r.RPopLPush(key, key2)
+	fmt.Println(v)
+	ss, _ := r.LRange(key, 0, -1)
+	fmt.Println(ss)
+	ss, _ = r.LRange(key2, 0, -1)
+	fmt.Println(ss)
 
 	// Output:
 	// three
@@ -138,10 +152,14 @@ func ExampleRedis_LRange() {
 	r.Del(key)
 
 	r.RPush(key, "one", "two", "three")
-	fmt.Println(r.LRange(key, 0, 0))
-	fmt.Println(r.LRange(key, -3, 2))
-	fmt.Println(r.LRange(key, -100, 100))
-	fmt.Println(r.LRange(key, 5, 10))
+	v, _ := r.LRange(key, 0, 0)
+	fmt.Println(v)
+	v, _ = r.LRange(key, -3, 2)
+	fmt.Println(v)
+	v, _ = r.LRange(key, -100, 100)
+	fmt.Println(v)
+	v, _ = r.LRange(key, 5, 10)
+	fmt.Println(v)
 
 	// Output:
 	// [one]
@@ -158,8 +176,10 @@ func ExampleRedis_LRem() {
 	r.Del(key)
 
 	r.RPush(key, "hello", "hello", "foo", "hello")
-	fmt.Println(r.LRem(key, -2, "hello"))
-	fmt.Println(r.LRange(key, 0, -1))
+	v, _ := r.LRem(key, -2, "hello")
+	fmt.Println(v)
+	ss, _ := r.LRange(key, 0, -1)
+	fmt.Println(ss)
 
 	// Output:
 	// 2
@@ -176,7 +196,8 @@ func ExampleRedis_LSet() {
 	r.RPush(key, "one", "two", "three")
 	r.LSet(key, 0, "four")
 	r.LSet(key, -2, "five")
-	fmt.Println(r.LRange(key, 0, -1))
+	v, _ := r.LRange(key, 0, -1)
+	fmt.Println(v)
 
 	// Output:
 	// [four five three]
@@ -191,7 +212,8 @@ func ExampleRedis_LTrim() {
 
 	r.RPush(key, "one", "two", "three")
 	r.LTrim(key, 1, -1)
-	fmt.Println(r.LRange(key, 0, -1))
+	v, _ := r.LRange(key, 0, -1)
+	fmt.Println(v)
 
 	// Output:
 	// [two three]
@@ -205,7 +227,8 @@ func ExampleRedis_BLPop() {
 	r.Del(key)
 
 	r.RPush(key, "one", "two", "three")
-	fmt.Println(r.BLPop(key, 0))
+	v, _ := r.BLPop(key, 0)
+	fmt.Println(v)
 
 	// Output:
 	// [test-blpop one]
@@ -219,7 +242,8 @@ func ExampleRedis_BRPop() {
 	r.Del(key)
 
 	r.RPush(key, "one", "two", "three")
-	fmt.Println(r.BRPop(key, 0))
+	v, _ := r.BRPop(key, 0)
+	fmt.Println(v)
 
 	// Output:
 	// [test-brpop three]
@@ -235,9 +259,12 @@ func ExampleRedis_BRPopLPush() {
 	r.Del(key2)
 
 	r.RPush(key, "one", "two", "three")
-	fmt.Println(r.BRPopLPush(key, key2, 0))
-	fmt.Println(r.LRange(key, 0, -1))
-	fmt.Println(r.LRange(key2, 0, -1))
+	v, _ := r.BRPopLPush(key, key2, 0)
+	fmt.Println(v)
+	ss, _ := r.LRange(key, 0, -1)
+	fmt.Println(ss)
+	ss, _ = r.LRange(key2, 0, -1)
+	fmt.Println(ss)
 
 	// Output:
 	// three

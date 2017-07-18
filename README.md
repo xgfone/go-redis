@@ -39,12 +39,9 @@ The correspondences is as follows.
 
 **Notice:**
 
-1. If the redis connection has an error, or the redis server returns an error, the API will panic with the error.
-2. For the specail commands of `INFO` and `CLIENT LIST`, the corresponding APIs, `Info` and `ClientList`, will return the parsed Key-Values, that's, `map[string]string`.
-
-**About Panic**
-
-The way that Go handles the error is good, but i think that the error should not break the fluency of the code, or that someone maybe only uses the right result, doesn't care about the error(The error should not occur in general), and want to handle it intensively in a same point if there are an error. This is what i want. It may not conform the habit of Go. As long as you like it, it does not matter what it is.
+1. If the redis connection has an error, or the redis server returns an error, the API will return the error.
+2. All commands return an error to indicate whether the call is successful. If the error is `nil`, you can use the result value if existing.
+3. For the specail commands of `INFO` and `CLIENT LIST`, the corresponding APIs, `Info` and `ClientList`, will return the parsed Key-Values, that's, `map[string]string`.
 
 
 ## Implemented Commands Table

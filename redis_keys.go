@@ -2,17 +2,15 @@ package redis
 
 // Keys executes the redis command KEYS。
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Keys(pattern string) []string {
+func (r *Redis) Keys(pattern string) ([]string, error) {
 	reply, err := r.Do("KEYS", pattern)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	_results := reply.([]interface{})
 	if len(_results) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	results := make([]string, len(_results))
@@ -20,15 +18,13 @@ func (r *Redis) Keys(pattern string) []string {
 		results[i] = string(_r.([]byte))
 	}
 
-	return results
+	return results, nil
 }
 
 // Del executes the redis command DEL.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Del(key string, keys ...string) int64 {
+func (r *Redis) Del(key string, keys ...string) (int64, error) {
 	args := make([]interface{}, len(keys)+1)
 	args[0] = key
 	for i, k := range keys {
@@ -39,10 +35,10 @@ func (r *Redis) Del(key string, keys ...string) int64 {
 
 // Exists executes the redis command EXISTS.
 //
-// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+// For the returned value, true is 1 and false is 0.
 //
 // New in redis version 1.0.0.
-func (r *Redis) Exists(key string, keys ...string) bool {
+func (r *Redis) Exists(key string, keys ...string) (bool, error) {
 	args := make([]interface{}, len(keys)+1)
 	args[0] = key
 	for i, k := range keys {
@@ -53,108 +49,102 @@ func (r *Redis) Exists(key string, keys ...string) bool {
 
 // Expire executes the redis command EXPIRE.
 //
-// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+// For the returned value, true is 1 and false is 0.
 //
 // New in redis version 1.0.0.
-func (r *Redis) Expire(key string, timeout int) bool {
+func (r *Redis) Expire(key string, timeout int) (bool, error) {
 	return r.doToBool("EXPIRE", key, timeout)
 }
 
 // PExpire executes the redis command PEXPIRE.
 //
-// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+// For the returned value, true is 1 and false is 0.
 //
 // New in redis version 2.6.0.
-func (r *Redis) PExpire(key string, timeout int) bool {
+func (r *Redis) PExpire(key string, timeout int) (bool, error) {
 	return r.doToBool("PEXPIRE", key, timeout)
 }
 
 // ExpireAt executes the redis command EXPIREAT.
 //
-// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+// For the returned value, true is 1 and false is 0.
 //
 // New in redis version 1.2.0.
-func (r *Redis) ExpireAt(key string, timestamp int) bool {
+func (r *Redis) ExpireAt(key string, timestamp int) (bool, error) {
 	return r.doToBool("EXPIREAT", key, timestamp)
 }
 
 // PExpireAt executes the redis command PEXPIREAT.
 //
-// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+// For the returned value, true is 1 and false is 0.
 //
 // New in redis version 2.6.0.
-func (r *Redis) PExpireAt(key string, timestamp int) bool {
+func (r *Redis) PExpireAt(key string, timestamp int) (bool, error) {
 	return r.doToBool("PEXPIREAT", key, timestamp)
 }
 
 // Move executes the redis command MOVE.
 //
-// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+// For the returned value, true is 1 and false is 0.
 //
 // New in redis version 1.0.0.
-func (r *Redis) Move(key string, db int) bool {
+func (r *Redis) Move(key string, db int) (bool, error) {
 	return r.doToBool("MOVE", key, db)
 }
 
 // Persist executes the redis command PERSIST.
 //
-// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+// For the returned value, true is 1 and false is 0.
 //
 // New in redis version 2.2.0.
-func (r *Redis) Persist(key string) bool {
+func (r *Redis) Persist(key string) (bool, error) {
 	return r.doToBool("PERSIST", key)
 }
 
 // TTL executes the redis command TTL.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) TTL(key string) int64 {
+func (r *Redis) TTL(key string) (int64, error) {
 	return r.doToInt("TTL", key)
 }
 
 // PTTL executes the redis command PTTL.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.6.0.
-func (r *Redis) PTTL(key string) int64 {
+func (r *Redis) PTTL(key string) (int64, error) {
 	return r.doToInt("PTTL", key)
 }
 
 // RandomKey executes the redis command RANDOMKEY.
 //
-// Panic if an error occurs. Return "" if no key exist.
+// Return "" if no key exist.
 //
 // New in redis version 1.0.0.
-func (r *Redis) RandomKey() string {
+func (r *Redis) RandomKey() (string, error) {
 	return r.doToString("RANDOMKEY")
 }
 
 // Rename executes the redis command RENAME.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Rename(oldKey, newKey string) {
-	r.do("RENAME", oldKey, newKey)
+func (r *Redis) Rename(oldKey, newKey string) error {
+	return r.do("RENAME", oldKey, newKey)
 }
 
 // RenameNX executes the redis command RENAMENX.
 //
-// For the returned value, true is 1 and false is 0. Panic if an error occurs.
+// For the returned value, true is 1 and false is 0.
 //
 // New in redis version 1.0.0.
-func (r *Redis) RenameNX(oldKey, newKey string) bool {
+func (r *Redis) RenameNX(oldKey, newKey string) (bool, error) {
 	return r.doToBool("RENAMENX", oldKey, newKey)
 }
 
 // Type executes the redis command TYPE.
 //
-// Return "" if the key does not exist. Panic if an error occurs.
+// Return "" if the key does not exist.
 //
 // New in redis version 1.0.0.
-func (r *Redis) Type(key string) string {
+func (r *Redis) Type(key string) (string, error) {
 	return r.doToString("TYPE", key)
 }

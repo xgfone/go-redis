@@ -13,8 +13,14 @@ import (
 var RedisConnTimeout = 5 * time.Second
 
 var (
-	// ErrInvalidArgs is panicked when the arguments of the redis command is not right.
+	// ErrInvalidArgs is returned when the arguments of the redis command is not right.
 	ErrInvalidArgs = fmt.Errorf("The arguments is invalid.")
+
+	// ErrInvalidResult is returned when the result is not right.
+	ErrInvalidResult = fmt.Errorf("The result is invalid.")
+
+	// ErrNotExist is returned when the key or result does not exist.
+	ErrNotExist = fmt.Errorf("Not exist")
 )
 
 type redisConn struct {
@@ -62,12 +68,12 @@ func (r *Redis) Close() {
 	r.rp.Close()
 }
 
-func (r *Redis) getConn() *redisConn {
+func (r *Redis) getConn() (*redisConn, error) {
 	c, err := r.rp.Get(r.ctx)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return c.(*redisConn)
+	return c.(*redisConn), nil
 }
 
 func (r *Redis) putConn(c *redisConn) {
@@ -76,7 +82,10 @@ func (r *Redis) putConn(c *redisConn) {
 
 // Do executes the Redis command, then returns the result.
 func (r *Redis) Do(cmd string, args ...interface{}) (reply interface{}, err error) {
-	conn := r.getConn()
+	conn, err := r.getConn()
+	if err != nil {
+		return nil, err
+	}
 
 	defer func() {
 		if conn.Err() != nil {

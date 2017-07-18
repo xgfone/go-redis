@@ -2,28 +2,22 @@ package redis
 
 // Auth executes the redis command AUTH.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Auth(passwd string) {
-	r.do("AUTH", passwd)
+func (r *Redis) Auth(passwd string) error {
+	return r.do("AUTH", passwd)
 }
 
 // Echo executes the redis command ECHO.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Echo(msg string) string {
+func (r *Redis) Echo(msg string) (string, error) {
 	return r.doToString("ECHO", msg)
 }
 
 // Ping executes the redis command PING.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Ping(msg ...string) string {
+func (r *Redis) Ping(msg ...string) (string, error) {
 	if len(msg) == 0 {
 		return r.doToString("PING")
 	}
@@ -32,27 +26,21 @@ func (r *Redis) Ping(msg ...string) string {
 
 // Quit executes the redis command QUIT.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Quit() {
-	r.do("QUIT")
+func (r *Redis) Quit() error {
+	return r.do("QUIT")
 }
 
 // Select executes the redis command SELECT.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Select(index int) {
-	r.do("SELECT", index)
+func (r *Redis) Select(index int) error {
+	return r.do("SELECT", index)
 }
 
 // SwapDB executes the redis command SWAPDB.
 //
-// Panic if an error occurs.
-//
 // New in redis version 4.0.0.
-func (r *Redis) SwapDB(index1, index2 int) {
-	r.do("SWAPDB", index1, index2)
+func (r *Redis) SwapDB(index1, index2 int) error {
+	return r.do("SWAPDB", index1, index2)
 }

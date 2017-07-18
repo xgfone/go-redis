@@ -11,7 +11,8 @@ func ExampleRedis_ClientGetName() {
 	key := "test-clientgetname"
 
 	r.ClientSetName(key)
-	fmt.Println(r.ClientGetName())
+	v, _ := r.ClientGetName()
+	fmt.Println(v)
 
 	// Output:
 	// test-clientgetname
@@ -21,7 +22,8 @@ func ExampleRedis_ClientList() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	fmt.Println(len(r.ClientList()) != 0)
+	v, _ := r.ClientList()
+	fmt.Println(len(v) != 0)
 
 	// Output:
 	// true
@@ -31,8 +33,9 @@ func ExampleRedis_ClientReply() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	r.ClientReply("ON")
-	fmt.Println("OK")
+	if err := r.ClientReply("ON"); err == nil {
+		fmt.Println("OK")
+	}
 
 	// Output:
 	// OK
@@ -42,7 +45,9 @@ func ExampleRedis_CommandCount() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	fmt.Println(r.CommandCount() != 0)
+	if v, err := r.CommandCount(); err == nil && v != 0 {
+		fmt.Println(v != 0)
+	}
 
 	// Output:
 	// true
@@ -52,10 +57,13 @@ func ExampleRedis_CommandGetKeys() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	fmt.Println(r.CommandGetKeys("MSET", "a", "b", "c", "d", "e", "f"))
-	fmt.Println(r.CommandGetKeys("EVAL", "not consulted", 3, "key1", "key2",
-		"key3", "arg1", "arg2", "arg3", "argN"))
-	fmt.Println(r.CommandGetKeys("SORT", "mylist", "ALPHA", "STORE", "outlist"))
+	v, _ := r.CommandGetKeys("MSET", "a", "b", "c", "d", "e", "f")
+	fmt.Println(v)
+	v, _ = r.CommandGetKeys("EVAL", "not consulted", 3, "key1", "key2",
+		"key3", "arg1", "arg2", "arg3", "argN")
+	fmt.Println(v)
+	v, _ = r.CommandGetKeys("SORT", "mylist", "ALPHA", "STORE", "outlist")
+	fmt.Println(v)
 
 	// Output:
 	// [a c e]
@@ -68,7 +76,7 @@ func ExampleRedis_ConfigGet() {
 	defer r.Close()
 
 	r.ConfigSet("save", "900 1 300 10")
-	vs := r.ConfigGet("save")
+	vs, _ := r.ConfigGet("save")
 	if len(vs) == 2 { // For Windows Redis: ["save", "jd 900 jd 300"]
 		if vs[0] == "save" && vs[1] == "jd 900 jd 300" {
 			fmt.Println("OK")
@@ -92,40 +100,44 @@ func ExampleRedis_ConfigResetStat() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	r.ConfigResetStat()
-	fmt.Println()
+	if err := r.ConfigResetStat(); err == nil {
+		fmt.Println("OK")
+	}
 
 	// Output:
-	//
+	// OK
 }
 
 func ExampleRedis_ConfigRewrite() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	r.ConfigRewrite()
-	fmt.Println()
+	if err := r.ConfigRewrite(); err == nil {
+		fmt.Println("OK")
+	}
 
 	// Output:
-	//
+	// OK
 }
 
 func ExampleRedis_DBSize() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	r.DBSize()
-	fmt.Println()
+	if _, err := r.DBSize(); err == nil {
+		fmt.Println("OK")
+	}
 
 	// Output:
-	//
+	// OK
 }
 
 func ExampleRedis_Info() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	fmt.Println(len(r.Info()) != 0)
+	v, _ := r.Info()
+	fmt.Println(len(v) != 0)
 
 	// Output:
 	// true
@@ -135,7 +147,8 @@ func ExampleRedis_LastSave() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	fmt.Println(r.LastSave() != 0)
+	v, _ := r.LastSave()
+	fmt.Println(v != 0)
 
 	// Output:
 	// true
@@ -145,26 +158,25 @@ func ExampleRedis_Save() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	r.Save()
-	fmt.Println()
+	if err := r.Save(); err == nil {
+		fmt.Println("OK")
+	}
 
 	// Output:
-	//
+	// OK
 }
 
 func ExampleRedis_SlaveOf() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Println("Argument Error")
-		}
-	}()
+	if err := r.SlaveOf("no", "one"); err == nil {
+		fmt.Println("no one")
+	}
 
-	r.SlaveOf("no", "one")
-	fmt.Println("no one")
-	r.SlaveOf("not no", "not one")
+	if err := r.SlaveOf("not no", "not one"); err != nil {
+		fmt.Println("Argument Error")
+	}
 
 	// Output:
 	// no one
@@ -175,7 +187,7 @@ func ExampleRedis_Time() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	s, m := r.Time()
+	s, m, _ := r.Time()
 	fmt.Println(s != 0, m != 0)
 
 	// Output:

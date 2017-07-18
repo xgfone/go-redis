@@ -7,46 +7,38 @@ import (
 
 // BGRewriteAOF executes the redis command BGREWRITEAOF.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) BGRewriteAOF() {
-	r.do("BGREWRITEAOF")
+func (r *Redis) BGRewriteAOF() error {
+	return r.do("BGREWRITEAOF")
 }
 
 // BGSave executes the redis command BGSAVE.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) BGSave() {
-	r.do("BGSAVE")
+func (r *Redis) BGSave() error {
+	return r.do("BGSAVE")
 }
 
 // ClientGetName executes the redis command CLIENT GETNAME.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.6.9.
-func (r *Redis) ClientGetName() string {
+func (r *Redis) ClientGetName() (string, error) {
 	return r.doToString("CLIENT", "GETNAME")
 }
 
 // ClientSetName executes the redis command CLIENT SETNAME.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.6.9.
-func (r *Redis) ClientSetName(name string) {
-	r.do("CLIENT", "SETNAME", name)
+func (r *Redis) ClientSetName(name string) error {
+	return r.do("CLIENT", "SETNAME", name)
 }
 
 // ClientKill executes the redis command CLIENT KILL.
 //
-// Return nil or a int64. Panic if an error occurs.
+// Return nil or a int64.
 //
 // New in redis version 2.4.0.
-func (r *Redis) ClientKill(args ...interface{}) interface{} {
+func (r *Redis) ClientKill(args ...interface{}) (interface{}, error) {
 	_args := make([]interface{}, len(args)+1)
 	_args[0] = "KILL"
 	for i, v := range args {
@@ -54,20 +46,21 @@ func (r *Redis) ClientKill(args ...interface{}) interface{} {
 	}
 
 	if _r, err := r.Do("CLIENT", _args...); err != nil {
-		panic(err)
+		return nil, err
 	} else if _, ok := _r.(int64); ok {
-		return _r
+		return _r, nil
 	}
-	return nil
+	return nil, nil
 }
 
 // ClientList executes the redis command CLIENT LIST.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.4.0.
-func (r *Redis) ClientList() []map[string]string {
-	ss := r.doToString("CLIENT", "LIST")
+func (r *Redis) ClientList() ([]map[string]string, error) {
+	ss, err := r.doToString("CLIENT", "LIST")
+	if err != nil {
+		return nil, err
+	}
 
 	lines := strings.Split(strings.TrimSpace(ss), "\n")
 	results := make([]map[string]string, len(lines))
@@ -81,48 +74,40 @@ func (r *Redis) ClientList() []map[string]string {
 		results[i] = sm
 	}
 
-	return results
+	return results, nil
 }
 
 // ClientPause executes the redis command CLIENT PAUSE.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.9.50.
-func (r *Redis) ClientPause(timeout int) {
-	r.do("CLIENT", "PAUSE", timeout)
+func (r *Redis) ClientPause(timeout int) error {
+	return r.do("CLIENT", "PAUSE", timeout)
 }
 
 // ClientReply executes the redis command CLIENT REPLY.
 //
-// Panic if an error occurs.
-//
 // New in redis version 3.2.0.
-func (r *Redis) ClientReply(arg string) {
+func (r *Redis) ClientReply(arg string) error {
 	arg = strings.ToUpper(arg)
 	switch arg {
 	case "ON", "OFF", "SKIP":
 	default:
-		panic(ErrInvalidArgs)
+		return ErrInvalidArgs
 	}
-	r.do("CLIENT", "REPLY", arg)
+	return r.do("CLIENT", "REPLY", arg)
 }
 
 // CommandCount executes the redis command COMMAND COUNT.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.8.13.
-func (r *Redis) CommandCount() int64 {
+func (r *Redis) CommandCount() (int64, error) {
 	return r.doToInt("COMMAND", "COUNT")
 }
 
 // CommandGetKeys executes the redis command COMMAND GETKEYS.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.8.13.
-func (r *Redis) CommandGetKeys(command string, commands ...interface{}) []string {
+func (r *Redis) CommandGetKeys(command string, commands ...interface{}) ([]string, error) {
 	args := make([]interface{}, len(commands)+2)
 	args[0] = "GETKEYS"
 	args[1] = command
@@ -139,78 +124,66 @@ func (r *Redis) CommandGetKeys(command string, commands ...interface{}) []string
 // ["save", "jd 900 jd 300"] for Windows, and ["save", "900", "1", "300", "10"]
 // for Linux.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.0.0.
-func (r *Redis) ConfigGet(parameter string) []string {
+func (r *Redis) ConfigGet(parameter string) ([]string, error) {
 	return r.doToStringSlice("CONFIG", "GET", parameter)
 }
 
 // ConfigResetStat executes the redis command CONFIG RESETSTAT.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.0.0.
-func (r *Redis) ConfigResetStat() {
-	r.do("CONFIG", "RESETSTAT")
+func (r *Redis) ConfigResetStat() error {
+	return r.do("CONFIG", "RESETSTAT")
 }
 
 // ConfigRewrite executes the redis command CONFIG REWRITE.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.8.0.
-func (r *Redis) ConfigRewrite() {
-	r.do("CONFIG", "REWRITE")
+func (r *Redis) ConfigRewrite() error {
+	return r.do("CONFIG", "REWRITE")
 }
 
 // ConfigSet executes the redis command CONFIG SET.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.0.0.
-func (r *Redis) ConfigSet(parameter, value string) {
-	r.do("CONFIG", "SET", parameter, value)
+func (r *Redis) ConfigSet(parameter, value string) error {
+	return r.do("CONFIG", "SET", parameter, value)
 }
 
 // DBSize executes the redis command DBSIZE.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) DBSize() int64 {
+func (r *Redis) DBSize() (int64, error) {
 	return r.doToInt("DBSIZE")
 }
 
 // FlushAll executes the redis command FLUSHALL.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) FlushAll() {
-	r.do("FLUSHALL")
+func (r *Redis) FlushAll() error {
+	return r.do("FLUSHALL")
 }
 
 // FlushDB executes the redis command FLUSHDB.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) FlushDB() {
-	r.do("FLUSHDB")
+func (r *Redis) FlushDB() error {
+	return r.do("FLUSHDB")
 }
 
 // Info executes the redis command INFO.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Info(section ...string) map[string]string {
+func (r *Redis) Info(section ...string) (map[string]string, error) {
 	var ss string
+	var err error
 	if len(section) == 0 {
-		ss = r.doToString("INFO")
+		ss, err = r.doToString("INFO")
 	} else {
-		ss = r.doToString("INFO", section[0])
+		ss, err = r.doToString("INFO", section[0])
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	lines := strings.Split(strings.TrimSpace(ss), "\n")
@@ -225,88 +198,85 @@ func (r *Redis) Info(section ...string) map[string]string {
 		results[items[0]] = items[1]
 	}
 
-	return results
+	return results, nil
 }
 
 // LastSave executes the redis command LASTSAVE.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) LastSave() int64 {
+func (r *Redis) LastSave() (int64, error) {
 	return r.doToInt("LASTSAVE")
 }
 
 // Save executes the redis command SAVE.
 //
-// Panic if an error occurs.
-//
 // New in redis version 1.0.0.
-func (r *Redis) Save() {
-	r.do("SAVE")
+func (r *Redis) Save() error {
+	return r.do("SAVE")
 }
 
 // Shutdown executes the redis command SHUTDOWN.
 //
 // All the clients will be halted when executed this command,
-// and the connection will be closed. Panic if an error occurs.
+// and the connection will be closed.
 //
 // New in redis version 1.0.0.
-func (r *Redis) Shutdown(save ...string) {
+func (r *Redis) Shutdown(save ...string) error {
 	if len(save) > 1 {
-		panic(ErrInvalidArgs)
+		return ErrInvalidArgs
 	} else if len(save) == 1 {
 		_save := strings.ToUpper(save[0])
 		switch _save {
 		case "NOSAVE", "SAVE":
 		default:
-			panic(ErrInvalidArgs)
+			return ErrInvalidArgs
 		}
 		r.do("SHUTDOWN", _save)
-		return
+		return nil
 	}
-	r.do("SHUTDOWN")
+	return r.do("SHUTDOWN")
 }
 
 // SlaveOf executes the redis command SLAVEOF.
 //
 // If the parameters are either NO ONE or host port, which the port must be
-// the type of int and between 1 and b5535. Panic if an error occurs.
+// the type of int and between 1 and b5535.
 //
 // New in redis version 1.0.0.
-func (r *Redis) SlaveOf(host string, port interface{}) {
+func (r *Redis) SlaveOf(host string, port interface{}) error {
 	switch port.(type) {
 	case string:
 		host = strings.ToUpper(host)
 		_port := strings.ToUpper(port.(string))
 		if host != "NO" || _port != "ONE" {
-			panic(ErrInvalidArgs)
+			return ErrInvalidArgs
 		}
 		port = _port
 	case int:
 		_port := port.(int)
 		if _port < 1 || _port > 65535 {
-			panic(ErrInvalidArgs)
+			return ErrInvalidArgs
 		}
 	default:
-		panic(ErrInvalidArgs)
+		return ErrInvalidArgs
 	}
-	r.do("SLAVEOF", host, port)
+	return r.do("SLAVEOF", host, port)
 }
 
 // Time executes the redis command TIME.
 //
-// Panic if an error occurs.
-//
 // New in redis version 2.6.0.
-func (r *Redis) Time() (seconds, microseconds int64) {
-	vs := r.doToStringSlice("TIME")
-	var err error
+func (r *Redis) Time() (seconds, microseconds int64, err error) {
+	vs, err := r.doToStringSlice("TIME")
+	if err != nil {
+		return
+	}
+
 	if seconds, err = strconv.ParseInt(vs[0], 10, 64); err != nil {
-		panic(err)
+		return
 	}
 	if microseconds, err = strconv.ParseInt(vs[1], 10, 64); err != nil {
-		panic(err)
+		return
 	}
 	return
 }

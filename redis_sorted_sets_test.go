@@ -8,9 +8,13 @@ func ExampleRedis_ZRange() {
 
 	key := "test-zrange"
 	r.Del(key)
-	fmt.Println(r.ZAdd(key, 1, "one", 2, "two", 3, "three"))
-	fmt.Println(r.ZRange(key, 0, -1))
-	fmt.Println(r.ZRange(key, 0, 1, true))
+	v, _ := r.ZAdd(key, 1, "one", 2, "two", 3, "three")
+	fmt.Println(v)
+
+	ss, _ := r.ZRange(key, 0, -1)
+	fmt.Println(ss)
+	ss, _ = r.ZRange(key, 0, 1, true)
+	fmt.Println(ss)
 
 	// Output:
 	// 3
@@ -25,7 +29,8 @@ func ExampleRedis_ZCard() {
 	key := "test-zcard"
 	r.Del(key)
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZCard(key))
+	v, _ := r.ZCard(key)
+	fmt.Println(v)
 
 	// Output:
 	// 3
@@ -38,8 +43,10 @@ func ExampleRedis_ZCount() {
 	key := "test-zcount"
 	r.Del(key)
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZCount(key, "-inf", "+inf"))
-	fmt.Println(r.ZCount(key, "(1", 3))
+	v, _ := r.ZCount(key, "-inf", "+inf")
+	fmt.Println(v)
+	v, _ = r.ZCount(key, "(1", 3)
+	fmt.Println(v)
 
 	// Output:
 	// 3
@@ -53,8 +60,10 @@ func ExampleRedis_ZIncrBy() {
 	key := "test-zincrby"
 	r.Del(key)
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZIncrBy(key, 3, "one"))
-	fmt.Println(r.ZRange(key, 0, -1, true))
+	v, _ := r.ZIncrBy(key, 3, "one")
+	fmt.Println(v)
+	ss, _ := r.ZRange(key, 0, -1, true)
+	fmt.Println(ss)
 
 	// Output:
 	// 4
@@ -75,8 +84,10 @@ func ExampleRedis_ZInterStore() {
 	r.ZAdd(key1, 1, "one", 2, "two")
 	r.ZAdd(key2, 1, "one", 2, "two", 3, "three")
 
-	fmt.Println(r.ZInterStore(key, 2, key1, key2, "WEIGHTS", 2, 3))
-	fmt.Println(r.ZRange(key, 0, -1, true))
+	v, _ := r.ZInterStore(key, 2, key1, key2, "WEIGHTS", 2, 3)
+	fmt.Println(v)
+	ss, _ := r.ZRange(key, 0, -1, true)
+	fmt.Println(ss)
 
 	// Output:
 	// 2
@@ -93,8 +104,10 @@ func ExampleRedis_ZLexCount() {
 	r.ZAdd(key, 0, "a", 0, "b", 0, "c", 0, "d", 0, "e")
 	r.ZAdd(key, 0, "f", 0, "g")
 
-	fmt.Println(r.ZLexCount(key, "-", "+"))
-	fmt.Println(r.ZLexCount(key, "[b", "[f"))
+	v, _ := r.ZLexCount(key, "-", "+")
+	fmt.Println(v)
+	v, _ = r.ZLexCount(key, "[b", "[f")
+	fmt.Println(v)
 
 	// Output:
 	// 7
@@ -111,8 +124,10 @@ func ExampleRedis_ZRangeByLex() {
 	r.ZAdd(key, 0, "a", 0, "b", 0, "c", 0, "d", 0, "e")
 	r.ZAdd(key, 0, "f", 0, "g")
 
-	fmt.Println(r.ZRangeByLex(key, "-", "(c"))
-	fmt.Println(r.ZRangeByLex(key, "[aaa", "(g"))
+	v, _ := r.ZRangeByLex(key, "-", "(c")
+	fmt.Println(v)
+	v, _ = r.ZRangeByLex(key, "[aaa", "(g")
+	fmt.Println(v)
 
 	// Output:
 	// [a b]
@@ -127,10 +142,14 @@ func ExampleRedis_ZRangeByScore() {
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZRangeByScore(key, "-inf", "+inf"))
-	fmt.Println(r.ZRangeByScore(key, 0, 2))
-	fmt.Println(r.ZRangeByScore(key, "(1", 2))
-	fmt.Println(r.ZRangeByScore(key, "(1", "(2"))
+	v, _ := r.ZRangeByScore(key, "-inf", "+inf")
+	fmt.Println(v)
+	v, _ = r.ZRangeByScore(key, 0, 2)
+	fmt.Println(v)
+	v, _ = r.ZRangeByScore(key, "(1", 2)
+	fmt.Println(v)
+	v, _ = r.ZRangeByScore(key, "(1", "(2")
+	fmt.Println(v)
 
 	// Output:
 	// [one two three]
@@ -147,12 +166,14 @@ func ExampleRedis_ZRank() {
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZRank(key, "three"))
-	fmt.Println(r.ZRank(key, "four"))
+	v, _ := r.ZRank(key, "three")
+	fmt.Println(v)
+	v, _ = r.ZRank(key, "four")
+	fmt.Println(v)
 
 	// Output:
 	// 2
-	// -1
+	// 0
 }
 
 func ExampleRedis_ZRem() {
@@ -163,8 +184,10 @@ func ExampleRedis_ZRem() {
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZRem(key, "one", "two"))
-	fmt.Println(r.ZRange(key, 0, -1, true))
+	v, _ := r.ZRem(key, "one", "two")
+	fmt.Println(v)
+	ss, _ := r.ZRange(key, 0, -1, true)
+	fmt.Println(ss)
 
 	// Output:
 	// 2
@@ -181,9 +204,12 @@ func ExampleRedis_ZRemRangeByLex() {
 	r.ZAdd(key, 0, "a", 0, "b", 0, "c", 0, "d", 0, "e")
 	r.ZAdd(key, 0, "f", 0, "g")
 
-	fmt.Println(r.ZRange(key, 0, -1))
-	fmt.Println(r.ZRemRangeByLex(key, "[b", "[d"))
-	fmt.Println(r.ZRange(key, 0, -1))
+	ss, _ := r.ZRange(key, 0, -1)
+	fmt.Println(ss)
+	v, _ := r.ZRemRangeByLex(key, "[b", "[d")
+	fmt.Println(v)
+	ss, _ = r.ZRange(key, 0, -1)
+	fmt.Println(ss)
 
 	// Output:
 	// [a b c d e f g]
@@ -199,8 +225,10 @@ func ExampleRedis_ZRemRangeByRank() {
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZRemRangeByRank(key, 0, 1))
-	fmt.Println(r.ZRange(key, 0, -1, true))
+	v, _ := r.ZRemRangeByRank(key, 0, 1)
+	fmt.Println(v)
+	ss, _ := r.ZRange(key, 0, -1, true)
+	fmt.Println(ss)
 
 	// Output:
 	// 2
@@ -215,8 +243,10 @@ func ExampleRedis_ZRemRangeByScore() {
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZRemRangeByScore(key, "-inf", "(2"))
-	fmt.Println(r.ZRange(key, 0, -1, true))
+	v, _ := r.ZRemRangeByScore(key, "-inf", "(2")
+	fmt.Println(v)
+	ss, _ := r.ZRange(key, 0, -1, true)
+	fmt.Println(ss)
 
 	// Output:
 	// 1
@@ -231,8 +261,10 @@ func ExampleRedis_ZRevRange() {
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZRevRange(key, 0, -1, true))
-	fmt.Println(r.ZRevRange(key, 2, 3))
+	v, _ := r.ZRevRange(key, 0, -1, true)
+	fmt.Println(v)
+	v, _ = r.ZRevRange(key, 2, 3)
+	fmt.Println(v)
 
 	// Output:
 	// [three 3 two 2 one 1]
@@ -249,9 +281,12 @@ func ExampleRedis_ZRevRangeByLex() {
 	r.ZAdd(key, 0, "a", 0, "b", 0, "c", 0, "d", 0, "e")
 	r.ZAdd(key, 0, "f", 0, "g")
 
-	fmt.Println(r.ZRevRangeByLex(key, "[c", "-"))
-	fmt.Println(r.ZRevRangeByLex(key, "(c", "-"))
-	fmt.Println(r.ZRevRangeByLex(key, "(g", "[aaa"))
+	v, _ := r.ZRevRangeByLex(key, "[c", "-")
+	fmt.Println(v)
+	v, _ = r.ZRevRangeByLex(key, "(c", "-")
+	fmt.Println(v)
+	v, _ = r.ZRevRangeByLex(key, "(g", "[aaa")
+	fmt.Println(v)
 
 	// Output:
 	// [c b a]
@@ -267,10 +302,14 @@ func ExampleRedis_ZRevRangeByScore() {
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZRevRangeByScore(key, "+inf", "-inf"))
-	fmt.Println(r.ZRevRangeByScore(key, 2, 1))
-	fmt.Println(r.ZRevRangeByScore(key, 2, "(1"))
-	fmt.Println(r.ZRevRangeByScore(key, "(2", "(1"))
+	v, _ := r.ZRevRangeByScore(key, "+inf", "-inf")
+	fmt.Println(v)
+	v, _ = r.ZRevRangeByScore(key, 2, 1)
+	fmt.Println(v)
+	v, _ = r.ZRevRangeByScore(key, 2, "(1")
+	fmt.Println(v)
+	v, _ = r.ZRevRangeByScore(key, "(2", "(1")
+	fmt.Println(v)
 
 	// Output:
 	// [three two one]
@@ -287,12 +326,14 @@ func ExampleRedis_ZRevRank() {
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZRevRank(key, "one"))
-	fmt.Println(r.ZRevRank(key, "four"))
+	v, _ := r.ZRevRank(key, "one")
+	fmt.Println(v)
+	v, _ = r.ZRevRank(key, "four")
+	fmt.Println(v)
 
 	// Output:
 	// 2
-	// -1
+	// 0
 }
 
 func ExampleRedis_ZScore() {
@@ -303,7 +344,8 @@ func ExampleRedis_ZScore() {
 	r.Del(key)
 
 	r.ZAdd(key, 1, "one", 2, "two", 3, "three")
-	fmt.Println(r.ZScore(key, "one"))
+	v, _ := r.ZScore(key, "one")
+	fmt.Println(v)
 
 	// Output:
 	// 1
@@ -323,8 +365,10 @@ func ExampleRedis_ZUnionStore() {
 	r.ZAdd(key1, 1, "one", 2, "two")
 	r.ZAdd(key2, 1, "one", 2, "two", 3, "three")
 
-	fmt.Println(r.ZUnionStore(key, 2, key1, key2, "WEIGHTS", 2, 3))
-	fmt.Println(r.ZRange(key, 0, -1, true))
+	v, _ := r.ZUnionStore(key, 2, key1, key2, "WEIGHTS", 2, 3)
+	fmt.Println(v)
+	ss, _ := r.ZRange(key, 0, -1, true)
+	fmt.Println(ss)
 
 	// Output:
 	// 3

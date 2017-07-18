@@ -15,46 +15,49 @@ func toBool(v interface{}) bool {
 	}
 }
 
-func (r *Redis) do(cmd string, args ...interface{}) {
-	if _, err := r.Do(cmd, args...); err != nil {
-		panic(err)
-	}
+func (r *Redis) do(cmd string, args ...interface{}) error {
+	_, err := r.Do(cmd, args...)
+	return err
+
 }
 
-func (r *Redis) doToInt(cmd string, args ...interface{}) int64 {
-	if _r, err := r.Do(cmd, args...); err != nil {
-		panic(err)
-	} else {
-		return _r.(int64)
+func (r *Redis) doToInt(cmd string, args ...interface{}) (int64, error) {
+	_r, err := r.Do(cmd, args...)
+	if err != nil {
+		return 0, err
 	}
+	return _r.(int64), nil
+
 }
 
-func (r *Redis) doToBool(cmd string, args ...interface{}) bool {
-	if _r, err := r.Do(cmd, args...); err != nil {
-		panic(err)
-	} else {
-		return toBool(_r)
+func (r *Redis) doToBool(cmd string, args ...interface{}) (bool, error) {
+	_r, err := r.Do(cmd, args...)
+	if err != nil {
+		return false, err
 	}
+	return toBool(_r), nil
 }
 
-func (r *Redis) doToString(cmd string, args ...interface{}) string {
-	if _r, err := r.Do(cmd, args...); err != nil {
-		panic(err)
+func (r *Redis) doToString(cmd string, args ...interface{}) (string, error) {
+	_r, err := r.Do(cmd, args...)
+	if err != nil {
+		return "", err
 	} else if _r != nil {
 		switch _r.(type) {
 		case string:
-			return _r.(string)
+			return _r.(string), nil
 		case []byte:
-			return string(_r.([]byte))
+			return string(_r.([]byte)), nil
+		default:
+			return "", ErrInvalidResult
 		}
-
 	}
-	return ""
+	return "", nil
 }
 
-func (r *Redis) doToFloat(cmd string, args ...interface{}) float64 {
+func (r *Redis) doToFloat(cmd string, args ...interface{}) (float64, error) {
 	if _r, err := r.Do(cmd, args...); err != nil {
-		panic(err)
+		return 0, err
 	} else if _r != nil {
 		var v string
 		switch _r.(type) {
@@ -63,23 +66,23 @@ func (r *Redis) doToFloat(cmd string, args ...interface{}) float64 {
 		case string:
 			v = _r.(string)
 		default:
-			return -1
+			return 0, ErrInvalidResult
 		}
 		_v, err := strconv.ParseFloat(v, 64)
 		if err != nil {
-			panic(err)
+			return 0, err
 		}
-		return _v
+		return _v, nil
 	}
-	return -1
+	return 0, ErrNotExist
 }
 
-func (r *Redis) doToStringSlice(cmd string, args ...interface{}) []string {
+func (r *Redis) doToStringSlice(cmd string, args ...interface{}) ([]string, error) {
 	if _r, err := r.Do(cmd, args...); err != nil {
-		panic(err)
+		return nil, err
 	} else if _r != nil {
 		if bs, ok := _r.([]byte); ok {
-			return []string{string(bs)}
+			return []string{string(bs)}, nil
 		}
 
 		vs := _r.([]interface{})
@@ -91,7 +94,7 @@ func (r *Redis) doToStringSlice(cmd string, args ...interface{}) []string {
 				results[i] = string(v.([]byte))
 			}
 		}
-		return results
+		return results, nil
 	}
-	return nil
+	return nil, nil
 }

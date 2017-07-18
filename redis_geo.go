@@ -2,14 +2,12 @@ package redis
 
 // GeoAdd executes the redis command GEOADD.
 //
-// Panic if an error occurs.
-//
 // New in redis version 3.2.0.
 func (r *Redis) GeoAdd(key string, longitude, latitude interface{},
-	member string, others ...interface{}) int64 {
+	member string, others ...interface{}) (int64, error) {
 	_len := len(others)
 	if _len%3 != 0 {
-		panic(ErrInvalidArgs)
+		return 0, ErrInvalidArgs
 	}
 
 	args := make([]interface{}, _len+4)
@@ -25,10 +23,8 @@ func (r *Redis) GeoAdd(key string, longitude, latitude interface{},
 
 // GeoDist executes the redis command GEODIST.
 //
-// Return -1.0 if one or both the members are missing. Panic if an error occurs.
-//
 // New in redis version 3.2.0.
-func (r *Redis) GeoDist(key, member1, member2 string, unit ...string) float64 {
+func (r *Redis) GeoDist(key, member1, member2 string, unit ...string) (float64, error) {
 	if len(unit) == 0 {
 		return r.doToFloat("GEODIST", key, member1, member2)
 	}
@@ -36,7 +32,7 @@ func (r *Redis) GeoDist(key, member1, member2 string, unit ...string) float64 {
 	switch unit[0] {
 	case "m", "km", "mi", "ft":
 	default:
-		panic(ErrInvalidArgs)
+		return 0, ErrInvalidArgs
 	}
 
 	return r.doToFloat("GEODIST", key, member1, member2, unit[0])
@@ -45,15 +41,15 @@ func (r *Redis) GeoDist(key, member1, member2 string, unit ...string) float64 {
 // GeoRadius executes the redis command GEORADIUS.
 //
 // The type of the returned value []string, or [][]string If WITHCOORD, WITHDIST
-// or WITHHASH options are specified. Panic if an error occurs.
+// or WITHHASH options are specified.
 //
 // New in redis version 3.2.0.
 func (r *Redis) GeoRadius(key string, longitude, latitude, radius interface{},
-	unit string, others ...interface{}) []interface{} {
+	unit string, others ...interface{}) ([]interface{}, error) {
 	switch unit {
 	case "m", "km", "mi", "ft":
 	default:
-		panic(ErrInvalidArgs)
+		return nil, ErrInvalidArgs
 	}
 
 	args := make([]interface{}, len(others)+5)
@@ -67,7 +63,7 @@ func (r *Redis) GeoRadius(key string, longitude, latitude, radius interface{},
 	}
 
 	if _r, err := r.Do("GEORADIUS", args...); err != nil {
-		panic(err)
+		return nil, err
 	} else if _r != nil {
 		vs := _r.([]interface{})
 		for i, v := range vs {
@@ -82,17 +78,15 @@ func (r *Redis) GeoRadius(key string, longitude, latitude, radius interface{},
 				vs[i] = _vs
 			}
 		}
-		return vs
+		return vs, nil
 	}
-	return nil
+	return nil, nil
 }
 
 // GeoHash executes the redis command GEOHASH.
 //
-// Panic if an error occurs.
-//
 // New in redis version 3.2.0.
-func (r *Redis) GeoHash(key, member string, members ...string) []string {
+func (r *Redis) GeoHash(key, member string, members ...string) ([]string, error) {
 	args := make([]interface{}, len(members)+2)
 	args[0] = key
 	args[1] = member
@@ -105,10 +99,8 @@ func (r *Redis) GeoHash(key, member string, members ...string) []string {
 
 // GeoPos executes the redis command GEOPOS.
 //
-// Panic if an error occurs.
-//
 // New in redis version 3.2.0.
-func (r *Redis) GeoPos(key, member string, members ...string) [][]string {
+func (r *Redis) GeoPos(key, member string, members ...string) ([][]string, error) {
 	args := make([]interface{}, len(members)+2)
 	args[0] = key
 	args[1] = member
@@ -117,7 +109,7 @@ func (r *Redis) GeoPos(key, member string, members ...string) [][]string {
 	}
 
 	if _r, err := r.Do("GEOPOS", args...); err != nil {
-		panic(err)
+		return nil, err
 	} else if _r != nil {
 		vs := _r.([]interface{})
 		results := make([][]string, len(vs))
@@ -134,23 +126,23 @@ func (r *Redis) GeoPos(key, member string, members ...string) [][]string {
 				results[i] = nil
 			}
 		}
-		return results
+		return results, nil
 	}
-	return nil
+	return nil, nil
 }
 
 // GeoRadiusByMember executes the redis command GEORADIUSBYMEMBER.
 //
 // The type of the returned value []string, or [][]string If WITHCOORD, WITHDIST
-// or WITHHASH options are specified. Panic if an error occurs.
+// or WITHHASH options are specified.
 //
 // New in redis version 3.2.0.
 func (r *Redis) GeoRadiusByMember(key, member string, radius interface{},
-	unit string, others ...interface{}) []interface{} {
+	unit string, others ...interface{}) ([]interface{}, error) {
 	switch unit {
 	case "m", "km", "mi", "ft":
 	default:
-		panic(ErrInvalidArgs)
+		return nil, ErrInvalidArgs
 	}
 
 	args := make([]interface{}, len(others)+4)
@@ -163,7 +155,7 @@ func (r *Redis) GeoRadiusByMember(key, member string, radius interface{},
 	}
 
 	if _r, err := r.Do("GEORADIUSBYMEMBER", args...); err != nil {
-		panic(err)
+		return nil, err
 	} else if _r != nil {
 		vs := _r.([]interface{})
 		for i, v := range vs {
@@ -178,7 +170,7 @@ func (r *Redis) GeoRadiusByMember(key, member string, radius interface{},
 				vs[i] = _vs
 			}
 		}
-		return vs
+		return vs, nil
 	}
-	return nil
+	return nil, nil
 }

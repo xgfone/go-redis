@@ -12,9 +12,10 @@ func ExampleRedis_Keys() {
 	r.Del(key)
 
 	r.Set(key, key)
-	keys := r.Keys(key + "*")
+	keys, _ := r.Keys(key + "*")
 	fmt.Printf("len=%d, key=%s\n", len(keys), keys[0])
-	fmt.Printf("len=%d\n", len(r.Keys("test-not-keys*")))
+	v, _ := r.Keys("test-not-keys*")
+	fmt.Printf("len=%d\n", len(v))
 
 	// Output:
 	// len=1, key=test-keys
@@ -32,7 +33,8 @@ func ExampleRedis_Del() {
 
 	r.Set(key1, key1)
 	r.Set(key2, key2)
-	fmt.Println(r.Del(key1, key2))
+	v, _ := r.Del(key1, key2)
+	fmt.Println(v)
 
 	// Output:
 	// 2
@@ -48,7 +50,8 @@ func ExampleRedis_Exists() {
 	r.Del(key2)
 
 	r.Set(key1, key1)
-	fmt.Println(r.Exists(key1, key2))
+	v, _ := r.Exists(key1, key2)
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -62,8 +65,10 @@ func ExampleRedis_Expire() {
 	r.Del(key)
 
 	r.Set(key, key)
-	fmt.Println(r.Expire(key, 1))
-	fmt.Println(r.Expire("nonexisting", 1))
+	v, _ := r.Expire(key, 1)
+	fmt.Println(v)
+	v, _ = r.Expire("nonexisting", 1)
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -78,8 +83,10 @@ func ExampleRedis_PExpire() {
 	r.Del(key)
 
 	r.Set(key, key)
-	fmt.Println(r.PExpire(key, 1))
-	fmt.Println(r.PExpire("nonexisting", 1))
+	v, _ := r.PExpire(key, 1)
+	fmt.Println(v)
+	v, _ = r.PExpire("nonexisting", 1)
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -94,8 +101,10 @@ func ExampleRedis_ExpireAt() {
 	r.Del(key)
 
 	r.Set(key, key)
-	fmt.Println(r.ExpireAt(key, 1293840000))
-	fmt.Println(r.ExpireAt("nonexisting", 1))
+	v, _ := r.ExpireAt(key, 1293840000)
+	fmt.Println(v)
+	v, _ = r.ExpireAt("nonexisting", 1)
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -110,8 +119,10 @@ func ExampleRedis_PExpireAt() {
 	r.Del(key)
 
 	r.Set(key, key)
-	fmt.Println(r.PExpireAt(key, 1293840000))
-	fmt.Println(r.PExpireAt("nonexisting", 1))
+	v, _ := r.PExpireAt(key, 1293840000)
+	fmt.Println(v)
+	v, _ = r.PExpireAt("nonexisting", 1)
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -126,8 +137,10 @@ func ExampleRedis_Persist() {
 	r.Del(key)
 
 	r.SetEX(key, 5, key)
-	fmt.Println(r.Persist(key))
-	fmt.Println(r.Persist("nonexisting"))
+	v, _ := r.Persist(key)
+	fmt.Println(v)
+	v, _ = r.Persist("nonexisting")
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -142,7 +155,8 @@ func ExampleRedis_TTL() {
 	r.Del(key)
 
 	r.SetEX(key, 5, key)
-	fmt.Println(r.TTL(key))
+	v, _ := r.TTL(key)
+	fmt.Println(v)
 
 	// Output:
 	// 5
@@ -156,7 +170,8 @@ func ExampleRedis_PTTL() {
 	r.Del(key)
 
 	r.SetEX(key, 1, key)
-	fmt.Println(r.PTTL(key) > 990)
+	v, _ := r.PTTL(key)
+	fmt.Println(v > 990)
 
 	// Output:
 	// true
@@ -173,7 +188,8 @@ func ExampleRedis_Rename() {
 
 	r.Set(key, key)
 	r.Rename(key, newKey)
-	fmt.Println(r.Get(newKey))
+	v, _ := r.Get(newKey)
+	fmt.Println(v)
 
 	// Output:
 	// test-rename
@@ -190,8 +206,10 @@ func ExampleRedis_RenameNX() {
 
 	r.Set(key, key)
 	r.Set(newKey, newKey)
-	fmt.Println(r.RenameNX(key, newKey))
-	fmt.Println(r.Get(newKey))
+	b, _ := r.RenameNX(key, newKey)
+	fmt.Println(b)
+	v, _ := r.Get(newKey)
+	fmt.Println(v)
 
 	// Output:
 	// false
@@ -206,7 +224,8 @@ func ExampleRedis_Type() {
 	r.Del(key)
 
 	r.Set(key, key)
-	fmt.Println(r.Type(key))
+	v, _ := r.Type(key)
+	fmt.Println(v)
 
 	// Output:
 	// string

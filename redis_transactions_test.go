@@ -13,7 +13,7 @@ func ExampleRedis_Exec() {
 	r.Multi()
 	r.Set(key, "123")
 	r.Get(key)
-	rs := r.Exec()
+	rs, _ := r.Exec()
 	fmt.Println(rs[0])
 	fmt.Println(string(rs[1].([]byte)))
 

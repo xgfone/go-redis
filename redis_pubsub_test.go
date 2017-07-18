@@ -11,7 +11,7 @@ func ExampleRedis_PubSub() {
 	r := NewRedis("redis://127.0.0.1:6379/0", 1)
 	defer r.Close()
 
-	psc := r.PubSub()
+	psc, _ := r.PubSub()
 
 	var wg sync.WaitGroup
 	wg.Add(2)

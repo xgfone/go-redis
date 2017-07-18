@@ -11,8 +11,10 @@ func ExampleRedis_PFAdd() {
 	key := "test-pfadd"
 	r.Del(key)
 
-	fmt.Println(r.PFAdd(key, "a", "b", "c", "d", "e", "f", "g"))
-	fmt.Println(r.PFCount(key))
+	b, _ := r.PFAdd(key, "a", "b", "c", "d", "e", "f", "g")
+	fmt.Println(b)
+	v, _ := r.PFCount(key)
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -30,10 +32,13 @@ func ExampleRedis_PFMerge() {
 	r.Del(src1)
 	r.Del(src2)
 
-	fmt.Println(r.PFAdd(src1, "foo", "bar", "zap", "a"))
-	fmt.Println(r.PFAdd(src2, "a", "b", "c", "foo"))
+	b, _ := r.PFAdd(src1, "foo", "bar", "zap", "a")
+	fmt.Println(b)
+	b, _ = r.PFAdd(src2, "a", "b", "c", "foo")
+	fmt.Println(b)
 	r.PFMerge(dst, src1, src2)
-	fmt.Println(r.PFCount(dst))
+	v, _ := r.PFCount(dst)
+	fmt.Println(v)
 
 	// Output:
 	// true

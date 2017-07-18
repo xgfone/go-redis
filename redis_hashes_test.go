@@ -11,9 +11,12 @@ func ExampleRedis_HGet() {
 	key := "test-hget"
 	r.Del(key)
 
-	fmt.Println(r.HSet(key, "field1", "foo"))
-	fmt.Println(r.HGet(key, "field1"))
-	fmt.Println(r.HGet(key, "field2"))
+	b, _ := r.HSet(key, "field1", "foo")
+	fmt.Println(b)
+	v, _ := r.HGet(key, "field1")
+	fmt.Println(v)
+	v, _ = r.HGet(key, "field2")
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -28,9 +31,12 @@ func ExampleRedis_HSetNX() {
 	key := "test-hsetnx"
 	r.Del(key)
 
-	fmt.Println(r.HSetNX(key, "field", "Hello"))
-	fmt.Println(r.HSetNX(key, "field", "World"))
-	fmt.Println(r.HGet(key, "field"))
+	b, _ := r.HSetNX(key, "field", "Hello")
+	fmt.Println(b)
+	b, _ = r.HSetNX(key, "field", "World")
+	fmt.Println(b)
+	v, _ := r.HGet(key, "field")
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -46,8 +52,10 @@ func ExampleRedis_HDel() {
 	r.Del(key)
 
 	r.HSet(key, "field1", "foo")
-	fmt.Println(r.HDel(key, "field1"))
-	fmt.Println(r.HDel(key, "field2"))
+	v, _ := r.HDel(key, "field1")
+	fmt.Println(v)
+	v, _ = r.HDel(key, "field2")
+	fmt.Println(v)
 
 	// Output:
 	// 1
@@ -62,8 +70,10 @@ func ExampleRedis_HExists() {
 	r.Del(key)
 
 	r.HSet(key, "field1", "foo")
-	fmt.Println(r.HExists(key, "field1"))
-	fmt.Println(r.HExists(key, "field2"))
+	v, _ := r.HExists(key, "field1")
+	fmt.Println(v)
+	v, _ = r.HExists(key, "field2")
+	fmt.Println(v)
 
 	// Output:
 	// true
@@ -79,7 +89,8 @@ func ExampleRedis_HGetAll() {
 
 	r.HSet(key, "field1", "foo")
 	r.HSet(key, "field2", "bar")
-	fmt.Println(r.HGetAll(key))
+	v, _ := r.HGetAll(key)
+	fmt.Println(v)
 
 	// Output:
 	// [field1 foo field2 bar]
@@ -93,9 +104,12 @@ func ExampleRedis_HIncrBy() {
 	r.Del(key)
 
 	r.HSet(key, "field", 5)
-	fmt.Println(r.HIncrBy(key, "field", 1))
-	fmt.Println(r.HIncrBy(key, "field", -1))
-	fmt.Println(r.HIncrBy(key, "field", -10))
+	v, _ := r.HIncrBy(key, "field", 1)
+	fmt.Println(v)
+	v, _ = r.HIncrBy(key, "field", -1)
+	fmt.Println(v)
+	v, _ = r.HIncrBy(key, "field", -10)
+	fmt.Println(v)
 
 	// Output:
 	// 6
@@ -111,7 +125,8 @@ func ExampleRedis_HIncrByFloat() {
 	r.Del(key)
 
 	r.HSet(key, "field", 10.50)
-	fmt.Println(r.HIncrByFloat(key, "field", 0.1))
+	v, _ := r.HIncrByFloat(key, "field", 0.1)
+	fmt.Println(v)
 
 	// Output:
 	// 10.6
@@ -126,7 +141,8 @@ func ExampleRedis_HKeys() {
 
 	r.HSet(key, "field1", "Hello")
 	r.HSet(key, "field2", "World")
-	fmt.Println(r.HKeys(key))
+	v, _ := r.HKeys(key)
+	fmt.Println(v)
 
 	// Output:
 	// [field1 field2]
@@ -141,7 +157,8 @@ func ExampleRedis_HLen() {
 
 	r.HSet(key, "field1", "Hello")
 	r.HSet(key, "field2", "World")
-	fmt.Println(r.HLen(key))
+	v, _ := r.HLen(key)
+	fmt.Println(v)
 
 	// Output:
 	// 2
@@ -156,7 +173,8 @@ func ExampleRedis_HMGet() {
 
 	r.HSet(key, "field1", "Hello")
 	r.HSet(key, "field2", "World")
-	fmt.Println(r.HMGet(key, "field1", "field2", "nofield"))
+	v, _ := r.HMGet(key, "field1", "field2", "nofield")
+	fmt.Println(v)
 
 	// Output:
 	// [Hello World ]
@@ -170,8 +188,10 @@ func ExampleRedis_HMSet() {
 	r.Del(key)
 
 	r.HMSet(key, "field1", "Hello", "field2", "World")
-	fmt.Println(r.HGet(key, "field1"))
-	fmt.Println(r.HGet(key, "field2"))
+	v, _ := r.HGet(key, "field1")
+	fmt.Println(v)
+	v, _ = r.HGet(key, "field2")
+	fmt.Println(v)
 
 	// Output:
 	// Hello
@@ -186,9 +206,12 @@ func ExampleRedis_HStrLen() {
 	r.Del(key)
 
 	r.HMSet(key, "f1", "HelloWorld", "f2", 99, "f3", -256)
-	fmt.Println(r.HStrLen(key, "f1"))
-	fmt.Println(r.HStrLen(key, "f2"))
-	fmt.Println(r.HStrLen(key, "f3"))
+	v, _ := r.HStrLen(key, "f1")
+	fmt.Println(v)
+	v, _ = r.HStrLen(key, "f2")
+	fmt.Println(v)
+	v, _ = r.HStrLen(key, "f3")
+	fmt.Println(v)
 
 	// Output:
 	// 10
@@ -204,7 +227,8 @@ func ExampleRedis_HVals() {
 	r.Del(key)
 
 	r.HMSet(key, "f1", "Hello", "f2", "World")
-	fmt.Println(r.HVals(key))
+	v, _ := r.HVals(key)
+	fmt.Println(v)
 
 	// Output:
 	// [Hello World]
